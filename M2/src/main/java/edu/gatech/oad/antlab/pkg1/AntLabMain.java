@@ -39,9 +39,7 @@ import edu.gatech.oad.antlab.pkg2.*;
         ant11 = new AntLab11();
         ant12 = new AntLab12();
         ant21 = new AntLab21();
-        ant22 = new AntLab22();
-        ant31 = new AntLab31();
-        
+        ant2
         
     }
     
@@ -50,7 +48,9 @@ import edu.gatech.oad.antlab.pkg2.*;
      * out to the console     
      * 
      */
-    public void printOutMessage() {
+    public void prin2 = new AntLab22();
+        ant31 = new AntLab31();
+        tOutMessage() {
         
         String toPrint = 
             ant11.getMessage() + ant12.getMessage() + ant21.getMessage()
@@ -61,8 +61,8 @@ import edu.gatech.oad.antlab.pkg2.*;
 		  toPrint += p1.toString("gburdell1");
 		  //Person2 replace P2 with your name
 		  //and gburdell with your gt id
-		  Person2 p2 = new Person2("P2");
-		  toPrint += p2.toString("gburdell2");
+		  Person2 p2 = new Person2("Nikita Bawa");
+		  toPrint += p2.toString("nbawa3");
 		  //Person3 replace P3 with your name
 		  //and gburdell3 with your gt id
 		  Person3 p3 = new Person3("Ashay Sheth");

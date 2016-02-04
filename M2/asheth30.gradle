@@ -5,18 +5,14 @@ version = '1.0'
 
 
 jar {
-    manifest {
-        attributes(
-			'Implementation-Title': 'asheth30_gradle',
+    manifest.attributes (
+            'Implementation-Title': 'asheth30_gradle',
             'Implementation-Version': version,
-            'Class-Path': '../../lib/resources.jar',
-            'Main-Class': 'edu/gatech/oad/antlab/pkg1/AntLabMain'
+            'Main-Class': 'edu.gatech.oad.antlab.pkg1.AntLabMain',
+            'Class-Path': '../../lib/resources.jar'
         )
-
-    }
-    destinationDir = file(".")
-    archiveName = 'build/libs/asheth30_M2.jar'
 }
+
 
 repositories {
     mavenCentral()
@@ -24,8 +20,5 @@ repositories {
 
 dependencies {
     compile files('lib/resources.jar')
-}
-
-task doStuff(dependsOn: [testClasses, clean, javadoc]) {
-    println "stuff successful"
+    runtime files('lib/resources.jar')
 }

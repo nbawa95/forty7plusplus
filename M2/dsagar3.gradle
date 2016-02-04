@@ -5,21 +5,14 @@ version = '1.0'
 
 
 jar {
-    manifest {
-        attributes(
+    manifest.attributes (
 			'Implementation-Title': 'dsagar3_gradle',
             'Implementation-Version': version,
-            'Main-Class': 'edu/gatech/oad/antlab/pkg1/AntLabMain',
+            'Main-Class': 'edu.gatech.oad.antlab.pkg1.AntLabMain',
             'Class-Path': '../../lib/resources.jar'
         )
+}
 
-    }
-    destinationDir = file(".")
-    archiveName = 'build/libs/dsagar3.jar'
-}
-task doStuff(dependsOn: [testClasses, clean, javadoc]) {
-    println "Hey guys whatsup!"
-}
 
 repositories {
     mavenCentral()
@@ -27,4 +20,5 @@ repositories {
 
 dependencies {
     compile files('lib/resources.jar')
+    runtime files('lib/resources.jar')
 }

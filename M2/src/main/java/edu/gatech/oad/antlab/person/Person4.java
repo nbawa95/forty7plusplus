@@ -36,7 +36,6 @@ public class Person4 {
         int character = ((int)input.charAt(i)) + 1;
         newString.append((char)character);
         }
-        System.out.println(newString);
         return newString.toString();
     }
     

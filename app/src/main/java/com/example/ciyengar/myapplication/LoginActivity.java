@@ -39,11 +39,6 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
-    /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
@@ -51,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             "user:pass"
     };
     /**
-     * Keep track of the login task to ensure we can cance v  vv  l it if requested.
+     * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
@@ -151,11 +146,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private boolean isEmailValid(String email) {
-        return email.equals("user");
+        return true;
+//        return email.equals("user");
     }
 
     private boolean isPasswordValid(String password) {
-        return password.equals("pass");
+        return true;
+//        return password.equals("pass");
     }
 
     /**
@@ -282,7 +279,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override

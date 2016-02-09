@@ -24,4 +24,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /** Called when the user clicks the logout button */
+    public void logoutAshay(View view) {
+        // Do something in response to button
+        finish();
+    }
+
 }

@@ -8,6 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,6 +21,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        TextView showData = (TextView) findViewById(R.id.database);
+        showData.setText(niceMessage());
     }
 
     public void selfDestruct(View view) {
@@ -28,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
     public void logoutAshay(View view) {
         // Do something in response to button
         finish();
+    }
+
+    public String niceMessage() {
+        String output = "Hi " + LoginActivity.CURRENTLOGIN[2] + ". You are a great "
+            + LoginActivity.CURRENTLOGIN[3] + " major!";
+        return output;
     }
 
 }

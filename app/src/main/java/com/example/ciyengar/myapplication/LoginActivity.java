@@ -42,9 +42,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user:pass"
-    };
+    public static ArrayList<String> DATABASE = new ArrayList<String>();
+    public static String[] CURRENTLOGIN;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -55,6 +54,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private AutoCompleteTextView registerUsernameView, registerNameView, registerMajorView;
+    private EditText registerPasswordView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+
+        registerUsernameView = (AutoCompleteTextView) findViewById(R.id.register_email);
+        registerNameView = (AutoCompleteTextView) findViewById(R.id.name);
+        registerMajorView = (AutoCompleteTextView) findViewById(R.id.major);
+        registerPasswordView = (EditText) findViewById(R.id.register_password);
+
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registerMe();
             }
         });
 
@@ -115,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -126,10 +141,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
+        }
+
+
+        cancel = true;
+        for (String data : DATABASE) {
+            String[] pieces = data.split(":");
+            if (pieces[0].equals(email) && pieces[1].equals(password)) {
+                cancel = false;
+                CURRENTLOGIN = pieces;
+                break;
+            }
         }
 
         if (cancel) {
@@ -139,20 +161,59 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
+            //showProgress(true); 
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean isEmailValid(String email) {
+    private void registerMe() {
+        String username = registerUsernameView.getText().toString();
+        String password = registerPasswordView.getText().toString();
+        String name = registerNameView.getText().toString();
+        String major = registerMajorView.getText().toString();
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (!isPasswordValid(password)) {
+            registerPasswordView.setError("Password either too short or conatins ':'");
+            focusView = registerPasswordView;
+            cancel = true;
+        }
+
+        if (!isUsernameValid(username)) {
+            registerUsernameView.setError("username taken or too short");
+            focusView = registerUsernameView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            String user = username + ":" + password + ":" + name + ":" + major;
+            DATABASE.add(user);
+            CURRENTLOGIN = user.split(":");
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        }
+
+    }
+
+    private boolean isUsernameValid(String username) {
+        for (String data : DATABASE) {
+            String[] pieces = data.split(":");
+                if (pieces[0].equals(username)) 
+                    return false;
+        }
+        if (username.length() < 5)
+            return false;
         return true;
-//        return email.equals("user");
     }
 
     private boolean isPasswordValid(String password) {
+        if (password.length() < 5 || password.contains(":"))
+            return false;
         return true;
-//        return password.equals("pass");
     }
 
     /**
@@ -209,6 +270,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+
+    }
+
+    @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
         cursor.moveToFirst();
@@ -218,11 +284,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
@@ -270,7 +331,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
+            for (String credential : DATABASE) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.

@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public static ArrayList<String> DATABASE = new ArrayList<String>();
     public static String[] CURRENTLOGIN;
-    private String[] majors = {"Pick a major",
+    private String[] majors = {"PICK A MAJOR",
 "Architecture", 
 "Industrial Design",
 "Computational Media",

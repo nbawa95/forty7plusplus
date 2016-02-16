@@ -32,6 +32,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -194,8 +195,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             String[] pieces = data.split(":");
             if (pieces[0].equals(email) && pieces[1].equals(password)) {
                 cancel = false; 
-                String[] index = String.valueOf(DATABASE.indexOf(data));
-                CURRENTLOGIN = ObjectArrays.concat(pieces, index, String.class);
+                String index = String.valueOf(DATABASE.indexOf(data));
+                String[] extend = Arrays.copyOf(CURRENTLOGIN, CURRENTLOGIN.length + 1);
+                extend[extend.length - 1] = index;
+                CURRENTLOGIN = extend;
                 break;
             }
         }
@@ -251,8 +254,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             String user = username + ":" + password + ":" + name + ":" + major;
             DATABASE.add(user);
-            String[] index = new String[] {String.valueOf(DATABASE.indexOf(user))};
-            CURRENTLOGIN = ObjectArrays.concat(user.split(":"), index, String.class);
+
+            String index = String.valueOf(DATABASE.indexOf(user));
+            String[] extend = Arrays.copyOf(CURRENTLOGIN, CURRENTLOGIN.length + 1);
+            extend[extend.length - 1] = index;
+            CURRENTLOGIN = extend;
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
 

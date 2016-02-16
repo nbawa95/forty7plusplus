@@ -94,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AutoCompleteTextView registerUsernameView, registerNameView;
     private EditText registerPasswordView;
     private NumberPicker majorPicker;
+    private Button registerButton;
+    private Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         majorPicker.setDisplayedValues(majors);
         registerPasswordView = (EditText) findViewById(R.id.register_password);
 
-        Button registerButton = (Button) findViewById(R.id.register_button);
+        registerButton = (Button) findViewById(R.id.register_button);
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,7 +216,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String username = registerUsernameView.getText().toString();
         String password = registerPasswordView.getText().toString();
         String name = registerNameView.getText().toString();
-        String major = majors[majorPicker.getValue()];
+        int majorIndex = majorPicker.getValue();
+        String major = majors[majorIndex];
         boolean cancel = false;
         View focusView = null;
 
@@ -227,6 +230,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!isUsernameValid(username)) {
             registerUsernameView.setError("username taken or too short");
             focusView = registerUsernameView;
+            cancel = true;
+        }
+
+        if (name.length() < 2) {
+            registerNameView.setError("Your name is too short");
+            focusView = registerButton;
+            cancel = true;
+        }
+
+        if (majorIndex == 0) {
+            registerButton.setError("You must pick a major");
+            focusView = registerButton;
             cancel = true;
         }
 

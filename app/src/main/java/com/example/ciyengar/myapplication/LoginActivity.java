@@ -193,7 +193,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         for (String data : DATABASE) {
             String[] pieces = data.split(":");
             if (pieces[0].equals(email) && pieces[1].equals(password)) {
-                cancel = false;
+                cancel = false; 
                 String[] index = String.valueOf(DATABASE.indexOf(data));
                 CURRENTLOGIN = ObjectArrays.concat(pieces, index, String.class);
                 break;
@@ -251,7 +251,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             String user = username + ":" + password + ":" + name + ":" + major;
             DATABASE.add(user);
-            String[] index = String.valueOf(DATABASE.indexOf(user));
+            String[] index = new String[] {String.valueOf(DATABASE.indexOf(user))};
             CURRENTLOGIN = ObjectArrays.concat(user.split(":"), index, String.class);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }

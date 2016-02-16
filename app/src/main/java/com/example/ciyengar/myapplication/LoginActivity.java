@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,6 +45,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public static ArrayList<String> DATABASE = new ArrayList<String>();
     public static String[] CURRENTLOGIN;
+    private String[] majors = {"Pick a major",
+"Architecture", 
+"Industrial Design",
+"Computational Media",
+"Computer Science",
+"Aerospace Engineering",
+"Biomedical Engineering",
+"Chemical and Biomolecular Engineering",
+"Civil Engineering",
+"Computer Engineering",
+"Electrical Engineering",
+"Environmental Engineering",
+"Industrial Engineering",
+"Materials Science and Engineering",
+"Mechanical Engineering",
+"Nuclear and Radiological Engineering",
+"Applied Mathematics",
+"Applied Physics",
+"Biochemistry",
+"Biology",
+"Chemistry",
+"Discrete Mathematics",
+"Earth and Atmospheric Sciences",
+"Physics",
+"Psychology",
+"Applied Languages and Intercultural Studies",
+"Computational Media",
+"Economics",
+"Economics and International Affairs",
+"Global Economics and Modern Languages",
+"History, Technology, and Society",
+"International Affairs",
+"International Affairs and Modern Language",
+"Literature, Media, and Communication",
+"Public Policy",
+"Business Administration"};
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -54,8 +91,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private AutoCompleteTextView registerUsernameView, registerNameView, registerMajorView;
+    private AutoCompleteTextView registerUsernameView, registerNameView;
     private EditText registerPasswordView;
+    private NumberPicker majorPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +126,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         registerUsernameView = (AutoCompleteTextView) findViewById(R.id.register_email);
         registerNameView = (AutoCompleteTextView) findViewById(R.id.name);
-        registerMajorView = (AutoCompleteTextView) findViewById(R.id.major);
+
+        majorPicker = (NumberPicker) findViewById(R.id.major_picker);
+        majorPicker.setMinValue(0);// restricted number to minimum value i.e 1
+        majorPicker.setMaxValue(majors.length - 1);// restricked number to maximum value i.e. 31
+        //majorPicker.setWrapSelectorWheel(true); 
+        majorPicker.setDisplayedValues(majors);
         registerPasswordView = (EditText) findViewById(R.id.register_password);
 
         Button registerButton = (Button) findViewById(R.id.register_button);
@@ -171,8 +214,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String username = registerUsernameView.getText().toString();
         String password = registerPasswordView.getText().toString();
         String name = registerNameView.getText().toString();
-        String major = registerMajorView.getText().toString();
-
+        String major = majors[majorPicker.getValue()];
         boolean cancel = false;
         View focusView = null;
 

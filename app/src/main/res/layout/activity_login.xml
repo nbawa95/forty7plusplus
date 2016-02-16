@@ -110,20 +110,12 @@
                 android:allowUndo="false" />
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <AutoCompleteTextView
-                android:id="@+id/major"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Major"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:allowUndo="false" />
-        </android.support.design.widget.TextInputLayout>
 
+        <NumberPicker
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:id="@+id/major_picker"
+            android:layout_gravity="center_horizontal" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

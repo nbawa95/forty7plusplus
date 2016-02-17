@@ -256,7 +256,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             DATABASE.add(user);
             String[] pieces = user.split(":");
             String index = String.valueOf(DATABASE.indexOf(user));
-            String[] extend = Arrays.copyOf(split, 5);
+            String[] extend = Arrays.copyOf(pieces, 5);
             extend[4] = index;
             CURRENTLOGIN = extend;
             startActivity(new Intent(LoginActivity.this, MainActivity.class));

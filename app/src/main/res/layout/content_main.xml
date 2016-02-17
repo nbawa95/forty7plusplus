@@ -17,19 +17,79 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Logout"
-        android:id="@+id/button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:onClick="selfDestruct" />
+        android:id="@+id/logout"
+        android:onClick="selfDestruct"
+        android:layout_below="@+id/loadImage"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/password"
+        android:paddingTop="40px"
+        android:password="true"
+        android:visibility="visible"
+        android:layout_above="@+id/name"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:text="Name"
+        android:layout_above="@+id/major"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Changes"
+        android:id="@+id/submit"
+        android:onClick="submitChanges"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Profile"
+        android:onClick="editProfile"
+        android:id="@+id/edit"
+        android:layout_below="@+id/submit"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/database"
-        android:layout_below="@+id/button"
+        android:id="@+id/username"
+        android:layout_above="@+id/password"
+        android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="1000px"
+        android:layout_height="61dp"
+        android:id="@+id/major"
+        android:layout_gravity="center_horizontal"
+        android:layout_above="@+id/submit"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:id="@+id/proPic"
+        android:layout_above="@+id/username"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load/Change Profile Picture"
+        android:id="@+id/loadImage"
+        android:layout_below="@+id/edit"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="114dp" />
+        android:onClick="loadImage" />
 </RelativeLayout>

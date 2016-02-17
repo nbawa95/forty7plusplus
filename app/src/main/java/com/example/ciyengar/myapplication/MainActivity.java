@@ -123,9 +123,27 @@ public class MainActivity extends AppCompatActivity {
     public void submitChanges(View view) {
         EditText password = (EditText) findViewById(R.id.password);
         boolean cancel = false;
+        EditText name = (EditText) findViewById(R.id.name);
+        String nameString = name.getText().toString();
+        NumberPicker major = (NumberPicker) findViewById(R.id.major);
+        int majorIndex = major.getValue();
         if (!isPasswordValid(password.getText().toString())) {
             Context context = getApplicationContext();
             CharSequence text = "Password is not valid";
+            int duration = Toast.LENGTH_SHORT;
+            cancel = true;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        } else if (nameString.length() < 2) {
+            Context context = getApplicationContext();
+            CharSequence text = "Name is too short";
+            int duration = Toast.LENGTH_SHORT;
+            cancel = true;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        } else if (majorIndex == 0) {
+            Context context = getApplicationContext();
+            CharSequence text = "Please pick a major";
             int duration = Toast.LENGTH_SHORT;
             cancel = true;
             Toast toast = Toast.makeText(context, text, duration);

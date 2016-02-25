@@ -10,4 +10,5 @@
     <string name="error_invalid_password">Incorrect password bruh</string>
     <string name="error_field_required">This field is required</string>
     <string name="title_activity_main">Congratulations! You logged in</string>
+    <string name="search_hint">Search movie or TV</string>
 </resources>

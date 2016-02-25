@@ -189,18 +189,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-
-        cancel = true;
+        boolean flag = true;
         for (String data : DATABASE) {
             String[] pieces = data.split(":");
             if (pieces[0].equals(email) && pieces[1].equals(password)) {
-                cancel = false; 
+                flag = false;
                 String index = String.valueOf(DATABASE.indexOf(data));
                 String[] extend = Arrays.copyOf(pieces, 5);
                 extend[4] = index;
                 CURRENTLOGIN = extend;
                 break;
             }
+        }
+        if (flag) {
+            cancel = true;
+            mPasswordView.setError("The username passord combination is incorrect");
+            focusView = mPasswordView;
         }
 
         if (cancel) {

@@ -90,10 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Queue of all REST requests
         RequestQueue queueTest = Volley.newRequestQueue(this);
-        String search = "incredible hulk";
-        System.out.println(search);
-        queueTest.add(searchMovie(search));
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -131,44 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void search(View view) {
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(intent);
+    }
     public void selfDestruct(View view) {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-    }
-
-    public JsonRequest searchMovie(String movieTitle) {
-        try {
-            movieTitle = URLEncoder.encode(movieTitle, "UTF-8");
-        } catch (UnsupportedEncodingException cantencode) {
-            cantencode.printStackTrace();
-        }
-        String url = "http://www.omdbapi.com/?s=" + movieTitle;
-        JsonObjectRequest jsonRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
-                        try {
-                            JSONArray results = response.getJSONArray("Search");
-                            for (int i = 0; i < results.length(); i++) {
-                                try {
-                                    JSONObject singleMovieResult = results.getJSONObject(i);
-                                    System.out.println(singleMovieResult.getString("Title"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                });
-        return jsonRequest;
     }
 
     public void editProfile(View view) {

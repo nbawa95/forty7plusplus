@@ -26,6 +26,17 @@ import android.graphics.BitmapFactory;
 import android.widget.NumberPicker;
 import android.graphics.Bitmap;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -70,6 +81,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RequestQueue queueTest = Volley.newRequestQueue(this);
+        String url = "http://www.omdbapi.com/?t=tangled&y=&plot=short&r=json";
+        System.out.println("Hello. Something has reached this point !!!");
+        JsonObjectRequest jsonRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            // response = response.getJSONObject("args");
+                            String site = response.getString("Title"),
+                                    network = response.getString("Plot");
+                            System.out.println("Title: "+site+"\nPlot: "+network);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+        // Add the request to the RequestQueue.
+        queueTest.add(jsonRequest);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

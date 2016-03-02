@@ -89,9 +89,9 @@ public class SearchActivity extends AppCompatActivity {
                 String  itemValue    = (String) listView.getItemAtPosition(position);
 
                 // Show Alert
+                finish();
                 Intent i = new Intent(SearchActivity.this, RateMovie.class);
                 startActivity(i);
-                finish();
 
             }
 

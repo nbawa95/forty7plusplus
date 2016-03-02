@@ -61,6 +61,10 @@ public class RateMovie extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(request);
     }
 
+    /**
+     * submit rating update firebase
+     * @param view button
+     */
     public void submitRating(View view) {
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
         int rating = ratingPicker.getValue();

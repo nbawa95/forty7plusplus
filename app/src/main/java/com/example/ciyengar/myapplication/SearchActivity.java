@@ -109,6 +109,10 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * updates the movies in the list
+     * @param view button view
+     */
     public void updateMovies(View view) {
         EditText searchBar = (EditText) findViewById(R.id.searchBar);
         String search = searchBar.getText().toString();
@@ -117,11 +121,20 @@ public class SearchActivity extends AppCompatActivity {
         refresh();
     }
 
+    /**
+     * edits the profile on click
+     * @param view button view
+     */
     public void editProfile(View view) {
         Intent intent = new Intent(SearchActivity.this, MainActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Request movies according to title
+     * @param movieTitle
+     * @return JsonRequest
+     */
     public JsonRequest searchMovie(String movieTitle) {
         System.out.println(movieTitle);
         try {
@@ -171,6 +184,9 @@ public class SearchActivity extends AppCompatActivity {
         return jsonRequest;
     }
 
+    /**
+     * refreshes the list
+     */
     public void refresh() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);

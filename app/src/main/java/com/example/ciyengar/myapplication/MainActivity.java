@@ -155,15 +155,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * goes to search
+     * @param view view button
+     */
     public void search(View view) {
         finish();
     }
 
+    /**
+     * self destruct go to login
+     * @param view button
+     */
     public void selfDestruct(View view) {
         myFirebaseRef.unauth();
         finish();
     }
 
+    /**
+     * edits the profile
+     * @param view button
+     */
     public void editProfile(View view) {
         EditText name = (EditText) findViewById(R.id.name);
         Button logout = (Button) findViewById(R.id.logout);
@@ -182,6 +194,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * submit changes to profile
+     * @param view button
+     */
     public void submitChanges(View view) {
         EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
         EditText newPassword = (EditText) findViewById(R.id.newPassword);
@@ -217,6 +233,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * update firebase with new profile
+     */
     private void updateDB() {
         EditText name = (EditText) findViewById(R.id.name);
         TextView username = (TextView) findViewById(R.id.username);
@@ -278,12 +297,21 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+    /**
+     * check password
+     * @param password user password
+     * @return
+     */
     private boolean isPasswordValid(String password) {
         if (password.length() < 5 || password.contains(":"))
             return false;
         return true;
     }
 
+    /**
+     * load image
+     * @param view
+     */
     public void loadImage(View view) {
         Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, RESULT_LOAD_IMAGE);

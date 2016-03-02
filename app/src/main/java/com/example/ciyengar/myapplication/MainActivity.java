@@ -7,6 +7,8 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import android.support.design.widget.FloatingActionButton;
 import java.util.ArrayList;
+import java.util.Map;
+
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -38,12 +40,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
 
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -84,82 +93,104 @@ public class MainActivity extends AppCompatActivity {
             "Public Policy",
             "Business Administration"};
 
+    private EditText name;
+    private TextView username;
+    private NumberPicker major;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Queue of all REST requests
-        RequestQueue queueTest = Volley.newRequestQueue(this);
+        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        EditText name = (EditText) findViewById(R.id.name);
-        TextView username = (TextView) findViewById(R.id.username);
-        NumberPicker major = (NumberPicker) findViewById(R.id.major);
+        name = (EditText) findViewById(R.id.name);
+        username = (TextView) findViewById(R.id.username);
+        EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
+        EditText newPassword = (EditText) findViewById(R.id.newPassword);
+        major = (NumberPicker) findViewById(R.id.major);
         major.setMinValue(0);// restricted number to minimum value i.e 1
         major.setMaxValue(majors.length - 1);// restricked number to maximum value i.e. 31
         //majorPicker.setWrapSelectorWheel(true);
         major.setDisplayedValues(majors);
-        EditText password = (EditText) findViewById(R.id.password);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
         Button logout = (Button) findViewById(R.id.logout);
-        int numIndex = 0;
-        int counter = 0;
-        for (String s: majors) {
-            if (s.equals(LoginActivity.CURRENTLOGIN[3])) {
-                numIndex = counter;
-                break;
-            }
-            counter++;
-        }
         edit.setEnabled(true);
         logout.setEnabled(true);
         submit.setEnabled(false);
         name.setEnabled(false);
         username.setEnabled(true);
         major.setEnabled(false);
-        password.setEnabled(false);
-        name.setText(LoginActivity.CURRENTLOGIN[2]);
-        username.setText(LoginActivity.CURRENTLOGIN[0]);
-        major.setValue(numIndex);
-        password.setText(LoginActivity.CURRENTLOGIN[1]);
+        oldPassword.setEnabled(false);
+        newPassword.setEnabled(false);
+        AuthData authData = myFirebaseRef.getAuth();
+        if (authData != null) {
+            username.setText((String) authData.getProviderData().get("email"));
+            Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    name.setText(((Map<String, String>) snapshot.getValue()).get("name"));
+                    int numIndex = 0;
+                    int counter = 0;
+                    for (String s: majors) {
+                        if (s.equals(((Map<String, String>) snapshot.getValue()).get("major"))) {
+                            numIndex = counter;
+                            break;
+                        }
+                        counter++;
+                    }
+                    major.setValue(numIndex);
+                }
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    System.out.println("The read failed: " + firebaseError.getMessage());
+                }
+            });
 
+        } else {
+            // should logout... this should never happen
+        }
     }
 
     public void search(View view) {
-        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-        startActivity(intent);
+        finish();
     }
+
     public void selfDestruct(View view) {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+        myFirebaseRef.unauth();
+        finish();
     }
 
     public void editProfile(View view) {
         EditText name = (EditText) findViewById(R.id.name);
         Button logout = (Button) findViewById(R.id.logout);
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
-        EditText password = (EditText) findViewById(R.id.password);
+        EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
+        EditText newPassword = (EditText) findViewById(R.id.newPassword);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
         logout.setEnabled(false);
         edit.setEnabled(false);
         name.setEnabled(true);
         major.setEnabled(true);
-        password.setEnabled(true);
+        oldPassword.setEnabled(true);
+        newPassword.setEnabled(true);
         submit.setEnabled(true);
 
     }
 
     public void submitChanges(View view) {
-        EditText password = (EditText) findViewById(R.id.password);
+        EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
+        EditText newPassword = (EditText) findViewById(R.id.newPassword);
         boolean cancel = false;
         EditText name = (EditText) findViewById(R.id.name);
         String nameString = name.getText().toString();
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
         int majorIndex = major.getValue();
-        if (!isPasswordValid(password.getText().toString())) {
+        if (!isPasswordValid(newPassword.getText().toString())) {
             Context context = getApplicationContext();
             CharSequence text = "Password is not valid";
             int duration = Toast.LENGTH_SHORT;
@@ -190,7 +221,8 @@ public class MainActivity extends AppCompatActivity {
         EditText name = (EditText) findViewById(R.id.name);
         TextView username = (TextView) findViewById(R.id.username);
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
-        EditText password = (EditText) findViewById(R.id.password);
+        EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
+        EditText newPassword = (EditText) findViewById(R.id.newPassword);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
         Button logout = (Button) findViewById(R.id.logout);
@@ -199,22 +231,51 @@ public class MainActivity extends AppCompatActivity {
         name.setEnabled(false);
         username.setEnabled(false);
         major.setEnabled(false);
-        password.setEnabled(false);
+        oldPassword.setEnabled(false);
+        newPassword.setEnabled(false);
         submit.setEnabled(false);
         String nameText = name.getText().toString();
         String usernameText = username.getText().toString();
-        String passwordText = password.getText().toString();
+        String oldPasswordText = oldPassword.getText().toString();
+        String newPasswordText = newPassword.getText().toString();
         String majorText = majors[major.getValue()];
-        Log.d("Current Login", usernameText);
-        String index = LoginActivity.CURRENTLOGIN[4];
-        String changedUser = usernameText + ":" + passwordText + ":" + nameText + ":" + majorText + ":" + index;
-        LoginActivity.CURRENTLOGIN[0] = usernameText;
-        LoginActivity.CURRENTLOGIN[1] = passwordText;
-        LoginActivity.CURRENTLOGIN[2] = nameText;
-        LoginActivity.CURRENTLOGIN[3] = majorText;
-        int newIndex = Integer.parseInt(index);
-        LoginActivity.DATABASE.remove(index);
-        LoginActivity.DATABASE.add(newIndex, changedUser);
+        String myUID = "";
+        AuthData authData = myFirebaseRef.getAuth();
+        if (authData != null) {
+            myUID = (String) authData.getUid();
+        }
+        // Update password on DB
+        myFirebaseRef.changePassword(usernameText, oldPasswordText, newPasswordText, new Firebase.ResultHandler() {
+            @Override
+            public void onSuccess() {
+                // password changed
+            }
+            @Override
+            public void onError(FirebaseError firebaseError) {
+                Context context = getApplicationContext();
+                CharSequence text = "Something went wrong";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+        });
+        Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child(myUID);
+        newUserRef.child("name").setValue(nameText);
+        newUserRef.child("major").setValue(majorText);
+//        myFirebaseRef.changeEmail(oldEmail, oldPasswordText, usernameText, new Firebase.ResultHandler() {
+//            @Override
+//            public void onSuccess() {
+//                // email changed
+//            }
+//            @Override
+//            public void onError(FirebaseError firebaseError) {
+//                Context context = getApplicationContext();
+//                CharSequence text = "Something went wrong";
+//                int duration = Toast.LENGTH_SHORT;
+//                Toast toast = Toast.makeText(context, text, duration);
+//                toast.show();
+//            }
+//        });
     }
 
     private boolean isPasswordValid(String password) {

@@ -3,6 +3,7 @@ package com.example.ciyengar.myapplication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -30,62 +31,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    public static ArrayList<String> DATABASE = new ArrayList<String>();
-    public static String[] CURRENTLOGIN;
-    private String[] majors = {"PICK A MAJOR",
-"Architecture", 
-"Industrial Design",
-"Computational Media",
-"Computer Science",
-"Aerospace Engineering",
-"Biomedical Engineering",
-"Chemical and Biomolecular Engineering",
-"Civil Engineering",
-"Computer Engineering",
-"Electrical Engineering",
-"Environmental Engineering",
-"Industrial Engineering",
-"Materials Science and Engineering",
-"Mechanical Engineering",
-"Nuclear and Radiological Engineering",
-"Applied Mathematics",
-"Applied Physics",
-"Biochemistry",
-"Biology",
-"Chemistry",
-"Discrete Mathematics",
-"Earth and Atmospheric Sciences",
-"Physics",
-"Psychology",
-"Applied Languages and Intercultural Studies",
-"Computational Media",
-"Economics",
-"Economics and International Affairs",
-"Global Economics and Modern Languages",
-"History, Technology, and Society",
-"International Affairs",
-"International Affairs and Modern Language",
-"Literature, Media, and Communication",
-"Public Policy",
-"Business Administration"};
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    private String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
+"Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
+"Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
+"Materials Science and Engineering", "Mechanical Engineering", "Nuclear and Radiological Engineering", "Applied Mathematics",
+"Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
+"Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
+"International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -101,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -160,9 +129,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+        Firebase ref = new Firebase("https://moviespotlight.firebaseio.com");
 
         // Reset errors.
         mEmailView.setError(null);
@@ -190,42 +157,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         boolean flag = true;
-        for (String data : DATABASE) {
-            String[] pieces = data.split(":");
-            if (pieces[0].equals(email) && pieces[1].equals(password)) {
-                flag = false;
-                String index = String.valueOf(DATABASE.indexOf(data));
-                String[] extend = Arrays.copyOf(pieces, 5);
-                extend[4] = index;
-                CURRENTLOGIN = extend;
-                break;
-            }
-        }
-        if (flag) {
-            cancel = true;
-            mPasswordView.setError("The username passord combination is incorrect");
-            focusView = mPasswordView;
-        }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            //showProgress(true); 
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
-        }
+        ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                Intent intent = new Intent(LoginActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                mPasswordView.setError("The username passord combination is incorrect");
+//                focusView = mPasswordView;
+                // there was an error
+            }
+        });
     }
 
     private void registerMe() {
+        Firebase ref = new Firebase("https://moviespotlight.firebaseio.com");
         String username = registerUsernameView.getText().toString();
         String password = registerPasswordView.getText().toString();
-        String name = registerNameView.getText().toString();
+        final String name = registerNameView.getText().toString();
         int majorIndex = majorPicker.getValue();
-        String major = majors[majorIndex];
+        final String major = majors[majorIndex];
         boolean cancel = false;
         View focusView = null;
 
@@ -256,24 +212,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (cancel) {
             focusView.requestFocus();
         } else {
-            String user = username + ":" + password + ":" + name + ":" + major;
-            DATABASE.add(user);
-            String[] pieces = user.split(":");
-            String index = String.valueOf(DATABASE.indexOf(user));
-            String[] extend = Arrays.copyOf(pieces, 5);
-            extend[4] = index;
-            CURRENTLOGIN = extend;
-            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            ref.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+                @Override
+                public void onSuccess(Map<String, Object> result) {
+                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
+                    Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child((String) result.get("uid"));
+                    newUserRef.child("name").setValue(name);
+                    newUserRef.child("major").setValue(major);
+                    Context context = getApplicationContext();
+                    CharSequence text = "Account successfully created";
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                }
+                @Override
+                public void onError(FirebaseError firebaseError) {
+                    System.out.println("ERROR: " + firebaseError.getMessage());
+                    Context context = getApplicationContext();
+                    CharSequence text = "ERROR: " + firebaseError.getMessage();
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+            });
+//            String user = username + ":" + password + ":" + name + ":" + major;
+//            DATABASE.add(user);
+//            String[] pieces = user.split(":");
+//            String index = String.valueOf(DATABASE.indexOf(user));
+//            String[] extend = Arrays.copyOf(pieces, 5);
+//            extend[4] = index;
+//            CURRENTLOGIN = extend;
+//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
         }
 
     }
 
     private boolean isUsernameValid(String username) {
-        for (String data : DATABASE) {
-            String[] pieces = data.split(":");
-                if (pieces[0].equals(username)) 
-                    return false;
-        }
         if (username.length() < 5)
             return false;
         return true;
@@ -375,63 +350,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DATABASE) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                //startActivity(new Intent(MainActivity, MainActivity.class))
-                Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(i);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_credentials));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
 

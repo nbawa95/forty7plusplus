@@ -18,6 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,6 +38,21 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+        Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    // user is logged in
+                } else {
+                    // user is not logged in
+                    Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
         setContentView(R.layout.activity_search);
         listView = (ListView) findViewById(R.id.movieList);
 
@@ -78,13 +95,17 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-
     public void updateMovies(View view) {
         EditText searchBar = (EditText) findViewById(R.id.searchBar);
         String search = searchBar.getText().toString();
         RequestQueue queueTest = Volley.newRequestQueue(this);
         queueTest.add(searchMovie(search));
         refresh();
+    }
+
+    public void editProfile(View view) {
+        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
     public JsonRequest searchMovie(String movieTitle) {

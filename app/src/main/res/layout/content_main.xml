@@ -25,12 +25,24 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
+        android:id="@+id/oldPassword"
+        android:paddingTop="40px"
+        android:password="true"
+        android:visibility="visible"
+        android:layout_above="@+id/newPassword"
+        android:layout_centerHorizontal="true"
+        android:hint="Old Password" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPassword"
         android:paddingTop="40px"
         android:password="true"
         android:visibility="visible"
         android:layout_above="@+id/name"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:hint="New Password" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,7 +59,8 @@
         android:id="@+id/submit"
         android:onClick="submitChanges"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignLeft="@+id/proPic"
+        android:layout_alignStart="@+id/proPic" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -56,8 +69,9 @@
         android:text="Edit Profile"
         android:onClick="editProfile"
         android:id="@+id/edit"
-        android:layout_below="@+id/submit"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/major"
+        android:layout_toLeftOf="@+id/name"
+        android:layout_toStartOf="@+id/name" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -97,7 +111,7 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search"
+        android:text="Back to search"
         android:id="@+id/button"
         android:layout_below="@+id/logout"
         android:onClick="search"

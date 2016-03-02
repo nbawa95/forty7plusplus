@@ -113,6 +113,7 @@ public class SearchActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
+                            SearchActivity.this.refresh();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

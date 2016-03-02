@@ -7,24 +7,24 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.ciyengar.myapplication.SearchActivity">
+    tools:context="com.example.ciyengar.myapplication.RateMovie">
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchBar"
-        android:hint="Search"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/movieTitle"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search"
-        android:id="@+id/searchButton"
-        android:onClick="updateMovies"
-        android:layout_below="@+id/searchBar"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/year"
+        android:layout_below="@+id/movieTitle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -32,27 +32,24 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:id="@+id/editProfile"
-        android:onClick="editProfile"
-        android:layout_above="@+id/movieList"
-        android:layout_toRightOf="@+id/searchButton"
-        android:layout_toEndOf="@+id/searchButton" />
+        android:text="Submit Rating"
+        android:id="@+id/submitRating"
+        android:onClick="submitRating"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
-    <ListView
-        android:layout_width="wrap_content"
+    <NumberPicker
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/movieList"
-        android:layout_below="@+id/searchButton"
+        android:id="@+id/ratingPicker"
+        android:layout_above="@+id/submitRating"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <Switch
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:id="@+id/switch1"
-        android:layout_below="@+id/searchBar"
-        android:layout_toRightOf="@+id/editProfile"
-        android:layout_toEndOf="@+id/editProfile" />
+        android:id="@+id/poster"
+        android:layout_below="@+id/year"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

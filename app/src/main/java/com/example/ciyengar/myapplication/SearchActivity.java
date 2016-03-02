@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,7 +34,8 @@ import java.util.ArrayList;
 
 public class SearchActivity extends AppCompatActivity {
 
-    public static ArrayList<String> movieTitles = new ArrayList<String>();
+    public static ArrayList<Movie> movies = new ArrayList<Movie>();
+    public static ArrayList<String> movieTitles = new ArrayList<>();
 
     ListView listView;
 
@@ -80,17 +84,27 @@ public class SearchActivity extends AppCompatActivity {
 
                 // ListView Clicked item index
                 int itemPosition     = position + 1;
-
+                RateMovie.currentMovie = movies.get(position);
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
 
                 // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "#" + itemPosition + " Movie " + itemValue, Toast.LENGTH_LONG)
-                        .show();
+                Intent i = new Intent(SearchActivity.this, RateMovie.class);
+                startActivity(i);
+                finish();
 
             }
 
+        });
+        final Switch aSwitch = (Switch) findViewById(R.id.switch1);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    aSwitch.setText("Movie");
+                } else {
+                    aSwitch.setText("Series");
+                }
+            }
         });
 
     }
@@ -115,6 +129,7 @@ public class SearchActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException cantencode) {
             cantencode.printStackTrace();
         }
+        movies.clear();
         movieTitles.clear();
         String url = "http://www.omdbapi.com/?s=" + movieTitle;
         JsonObjectRequest jsonRequest = new JsonObjectRequest
@@ -128,8 +143,16 @@ public class SearchActivity extends AppCompatActivity {
                             for (int i = 0; i < results.length(); i++) {
                                 try {
                                     JSONObject singleMovieResult = results.getJSONObject(i);
-                                    movieTitles.add(singleMovieResult.getString("Title"));
-                                    System.out.println(singleMovieResult.getString("Title"));
+                                    String title = singleMovieResult.getString("Title");
+                                    String year = singleMovieResult.getString("Year");
+                                    String id = singleMovieResult.getString("imdbID");
+                                    String posterURL = singleMovieResult.getString("Poster");
+                                    if (posterURL.equals("N/A")) {
+                                        posterURL = "http://ia.media-imdb.com/images/M/MV5BMjExNzM0NDM0N15BMl5BanBnXkFtZTcwMzkxOTUwNw@@._V1_SX300.jpg";
+                                    }
+                                    movies.add(new Movie(title, year, id, posterURL));
+                                    movieTitles.add(title);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }

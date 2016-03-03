@@ -10,6 +10,7 @@ public class Movie {
     private String year;
     private String id;
     private String posterURL;
+    private String movieDesc;
 
     /**
      * contructor for a movie
@@ -23,6 +24,13 @@ public class Movie {
         this.year = year;
         this.id = id;
         this.posterURL = posterURL;
+    }
+
+    /**
+     * set movie description
+     */
+    public void setMovieDesc(String movieDesc) {
+        this.movieDesc = movieDesc;
     }
 
     /**
@@ -55,5 +63,13 @@ public class Movie {
      */
     public String getPosterURL() {
         return this.posterURL;
+    }
+
+    /**
+     * get movie description
+     * @return movieDesc
+     */
+    public String getMovieDesc() {
+        return this.movieDesc;
     }
 }

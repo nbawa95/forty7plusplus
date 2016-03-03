@@ -87,8 +87,6 @@ public class SearchActivity extends AppCompatActivity {
                 RateMovie.currentMovie = movies.get(position);
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                // Show Alert
                 Intent i = new Intent(SearchActivity.this, RateMovie.class);
                 startActivity(i);
 

@@ -17,10 +17,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,11 +36,15 @@ public class RateMovie extends AppCompatActivity {
 
     public static Movie currentMovie;
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+    private static RequestQueue movieInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_movie);
+        movieInfo = Volley.newRequestQueue(this);
+        movieInfo.add(moreMovieInfo(currentMovie.getID()));
         TextView movieTitle = (TextView) findViewById(R.id.movieTitle);
         movieTitle.setText(currentMovie.getMovieTitle());
         TextView year = (TextView) findViewById(R.id.year);
@@ -43,8 +55,7 @@ public class RateMovie extends AppCompatActivity {
         String url = currentMovie.getPosterURL();
         final ImageView mImageView = (ImageView) findViewById(R.id.poster);
 
-
-// Retrieves an image specified by the URL, displays it in the UI.
+        // Retrieves an image specified by the URL, displays it in the UI.
         ImageRequest request = new ImageRequest(url,
                 new Response.Listener<Bitmap>() {
                     @Override
@@ -57,7 +68,7 @@ public class RateMovie extends AppCompatActivity {
                         System.out.println("error");
                     }
                 });
-// Access the RequestQueue through your singleton class.
+        // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(request);
     }
 
@@ -80,4 +91,35 @@ public class RateMovie extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+    /**
+     * Request movie info from title
+     * @param movieID
+     * @return JsonRequest
+     */
+    public JsonRequest moreMovieInfo(String movieID) {
+        String url = "http://www.omdbapi.com/?i=" + movieID + "&plot=full&r=json";
+        JsonObjectRequest jsonRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // the response is already constructed as a JSONObject!
+                        try {
+                            String movieDesc = response.getString("Plot");
+                            currentMovie.setMovieDesc(movieDesc);
+                            TextView movieDescField = (TextView) findViewById(R.id.movieDesc);
+                            movieDescField.setText(response.getString("Plot"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+        return jsonRequest;
+    }
+
 }

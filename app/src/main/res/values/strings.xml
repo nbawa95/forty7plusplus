@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">The Movie App</string>
+    <string name="app_name">Spotlight</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>

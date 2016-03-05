@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.LruCache;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -70,6 +73,27 @@ public class RateMovie extends AppCompatActivity {
                 });
         // Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(request);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_xml, menu);
+        return true;
+    }
+    public void logoutMenu(MenuItem view) {
+        myFirebaseRef.unauth();
+        finish();
+    }
+    public void searchMenu(MenuItem item) {
+        Intent i = new Intent(RateMovie.this, SearchActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void profileMenu(MenuItem item) {
+        Intent i = new Intent(RateMovie.this, MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     /**

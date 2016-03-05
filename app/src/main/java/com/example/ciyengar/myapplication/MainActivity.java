@@ -12,6 +12,9 @@ import java.util.Map;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.content.Context;
 import android.database.Cursor;
@@ -103,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         name = (EditText) findViewById(R.id.name);
         username = (TextView) findViewById(R.id.username);
         EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
@@ -116,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
         major.setDisplayedValues(majors);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
-        Button logout = (Button) findViewById(R.id.logout);
         edit.setEnabled(true);
-        logout.setEnabled(true);
         submit.setEnabled(false);
         name.setEnabled(false);
         username.setEnabled(true);
@@ -155,6 +154,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_xml, menu);
+        return true;
+    }
+    public void searchMenu(MenuItem item) {
+        Intent i = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void profileMenu(MenuItem item) {
+        return;
+    }
     /**
      * goes to search
      * @param view view button
@@ -168,6 +181,10 @@ public class MainActivity extends AppCompatActivity {
      * @param view button
      */
     public void selfDestruct(View view) {
+        myFirebaseRef.unauth();
+        finish();
+    }
+    public void logoutMenu(MenuItem view) {
         myFirebaseRef.unauth();
         finish();
     }

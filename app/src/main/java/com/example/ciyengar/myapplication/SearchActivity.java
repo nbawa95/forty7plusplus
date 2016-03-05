@@ -4,6 +4,9 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,6 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public static ArrayList<Movie> movies = new ArrayList<Movie>();
     public static ArrayList<String> movieTitles = new ArrayList<>();
+    private static Firebase firebaseRef;
 
     ListView listView;
 
@@ -44,6 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        firebaseRef = myFirebaseRef;
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -87,8 +92,10 @@ public class SearchActivity extends AppCompatActivity {
                 RateMovie.currentMovie = movies.get(position);
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
+                finish();
                 Intent i = new Intent(SearchActivity.this, RateMovie.class);
                 startActivity(i);
+                //finish();
 
             }
 
@@ -181,7 +188,27 @@ public class SearchActivity extends AppCompatActivity {
         return jsonRequest;
     }
 
-    /**
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_xml, menu);
+        return true;
+    }
+
+    public void searchMenu(MenuItem item) {
+        return;
+    }
+    public void logoutMenu(MenuItem view) {
+        firebaseRef.unauth();
+        finish();
+    }
+
+    public void profileMenu(MenuItem item) {
+        finish();
+        Intent i = new Intent(SearchActivity.this, MainActivity.class);
+        startActivity(i);
+        //finish();
+    }
+     /**
      * refreshes the list
      */
     public void refresh() {

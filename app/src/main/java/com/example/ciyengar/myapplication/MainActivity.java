@@ -52,6 +52,13 @@ import com.firebase.client.ValueEventListener;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -195,13 +202,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public void editProfile(View view) {
         EditText name = (EditText) findViewById(R.id.name);
-        Button logout = (Button) findViewById(R.id.logout);
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
         EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
         EditText newPassword = (EditText) findViewById(R.id.newPassword);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
-        logout.setEnabled(false);
         edit.setEnabled(false);
         name.setEnabled(true);
         major.setEnabled(true);
@@ -261,8 +266,6 @@ public class MainActivity extends AppCompatActivity {
         EditText newPassword = (EditText) findViewById(R.id.newPassword);
         Button submit = (Button) findViewById(R.id.submit);
         Button edit = (Button) findViewById(R.id.edit);
-        Button logout = (Button) findViewById(R.id.logout);
-        logout.setEnabled(true);
         edit.setEnabled(true);
         name.setEnabled(false);
         username.setEnabled(false);
@@ -330,59 +333,36 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void loadImage(View view) {
-        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent i = new Intent(
+                Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
         startActivityForResult(i, RESULT_LOAD_IMAGE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
             cursor.moveToFirst();
+
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
+
             ImageView imageView = (ImageView) findViewById(R.id.proPic);
-            imageView.setImageBitmap(getScaledBitmap(picturePath, 800, 800));
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            imageView.setRotation(90);
+
         }
     }
 
-    private Bitmap getScaledBitmap(String picturePath, int width, int height) {
-        BitmapFactory.Options sizeOptions = new BitmapFactory.Options();
-        sizeOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(picturePath, sizeOptions);
 
-        int inSampleSize = calculateInSampleSize(sizeOptions, width, height);
-
-        sizeOptions.inJustDecodeBounds = false;
-        sizeOptions.inSampleSize = inSampleSize;
-
-        return BitmapFactory.decodeFile(picturePath, sizeOptions);
-    }
-
-    private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-
-            // Calculate ratios of height and width to requested height and
-            // width
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-
-            // Choose the smallest ratio as inSampleSize value, this will
-            // guarantee
-            // a final image with both dimensions larger than or equal to the
-            // requested height and width.
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-
-        return inSampleSize;
-    }
 
 }

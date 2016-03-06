@@ -78,10 +78,10 @@
         android:layout_centerHorizontal="true" />
 
     <ImageView
-        android:layout_width="100px"
-        android:layout_height="100px"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/proPic"
-        android:layout_above="@+id/username"
+        android:layout_below="@+id/loadImage"
         android:layout_centerHorizontal="true" />
 
     <Button

@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:spotlight="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="100"
+        spotlight:showAsAction="never"
+        android:title="Refresh"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings">
+    </item>
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:onClick="searchMenu"
+        spotlight:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:onClick="profileMenu"
+        spotlight:showAsAction="always">
+    </item>
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        android:onClick="logoutMenu"
+        spotlight:showAsAction="never">
+    </item>
+
+</menu> 

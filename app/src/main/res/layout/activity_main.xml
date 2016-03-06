@@ -46,8 +46,8 @@
         android:id="@+id/submit"
         android:onClick="submitChanges"
         android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/proPic"
-        android:layout_alignStart="@+id/proPic" />
+        android:layout_alignRight="@+id/loadImage"
+        android:layout_alignEnd="@+id/loadImage" />
 
     <Button
         style="?android:attr/buttonStyleSmall"

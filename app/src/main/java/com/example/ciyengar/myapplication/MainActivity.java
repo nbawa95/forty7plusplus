@@ -1,5 +1,7 @@
 package com.example.ciyengar.myapplication;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.os.Bundle;
 
 import java.io.UnsupportedEncodingException;
@@ -11,6 +13,7 @@ import java.util.Map;
 
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -164,12 +167,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchActivity.class)) );
+        searchView.setIconifiedByDefault(true);
         return true;
-    }
-    public void searchMenu(MenuItem item) {
-        Intent i = new Intent(MainActivity.this, SearchActivity.class);
-        startActivity(i);
-        finish();
     }
 
     public void profileMenu(MenuItem item) {
@@ -179,9 +183,6 @@ public class MainActivity extends AppCompatActivity {
      * goes to search
      * @param view view button
      */
-    public void search(View view) {
-        finish();
-    }
 
     /**
      * self destruct go to login

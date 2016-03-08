@@ -1,10 +1,13 @@
 package com.example.ciyengar.myapplication;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.LruCache;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -78,15 +81,16 @@ public class RateMovie extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
+
+        // Get the SearchView and set the searchable configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchActivity.class)) );
+        searchView.setIconifiedByDefault(true);
         return true;
     }
     public void logoutMenu(MenuItem view) {
         myFirebaseRef.unauth();
-        finish();
-    }
-    public void searchMenu(MenuItem item) {
-        Intent i = new Intent(RateMovie.this, SearchActivity.class);
-        startActivity(i);
         finish();
     }
 

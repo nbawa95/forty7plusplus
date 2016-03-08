@@ -46,6 +46,9 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         Firebase.setAndroidContext(this);
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         firebaseRef = myFirebaseRef;
@@ -100,39 +103,37 @@ public class SearchActivity extends AppCompatActivity {
             }
 
         });
-        final Switch aSwitch = (Switch) findViewById(R.id.switch1);
-        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    aSwitch.setText("Movie");
-                } else {
-                    aSwitch.setText("Series");
-                }
-            }
-        });
 
+        handleIntent(getIntent());
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            updateMovies(query);
+        }
     }
 
     /**
      * updates the movies in the list
      * @param view button view
      */
-    public void updateMovies(View view) {
-        EditText searchBar = (EditText) findViewById(R.id.searchBar);
-        String search = searchBar.getText().toString();
+    public void updateMovies(String search) {
+        //EditText searchBar = (EditText) findViewById(R.id.searchBar);
+        //String search = searchBar.getText().toString();
         RequestQueue queueTest = Volley.newRequestQueue(this);
         queueTest.add(searchMovie(search));
         refresh();
     }
 
-    /**
-     * edits the profile on click
-     * @param view button view
-     */
-    public void editProfile(View view) {
-        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-        startActivity(intent);
-    }
 
     /**
      * Request movies according to title
@@ -194,9 +195,6 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
-    public void searchMenu(MenuItem item) {
-        return;
-    }
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();

@@ -34,8 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.AuthData;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    public static String currentUID;
+    public static User currentUser;
     private View mProgressView;
     private View mLoginFormView;
     private AutoCompleteTextView registerUsernameView, registerNameView;
@@ -161,8 +163,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
-            public void onAuthenticated(AuthData authData) {
+            public void onAuthenticated(final AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+
+                Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        String name =  (String) ((Map<String, String>) snapshot.getValue()).get("name");
+                        String major = (String) ((Map<String, String>) snapshot.getValue()).get("major");
+                        currentUser = new User((String) authData.getUid(), name, major);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError) {
+                        System.out.println("The read failed: " + firebaseError.getMessage());
+                    }
+                });
+
+
+
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();

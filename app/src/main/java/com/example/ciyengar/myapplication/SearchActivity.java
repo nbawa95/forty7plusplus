@@ -1,9 +1,12 @@
 package com.example.ciyengar.myapplication;
 
 import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,7 +52,7 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-        Firebase.setAndroidContext(this);
+
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         firebaseRef = myFirebaseRef;
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
@@ -95,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
                 RateMovie.currentMovie = movies.get(position);
                 // ListView Clicked item value
                 String  itemValue    = (String) listView.getItemAtPosition(position);
-                finish();
+                //finish();
                 Intent i = new Intent(SearchActivity.this, RateMovie.class);
                 startActivity(i);
                 //finish();
@@ -189,9 +192,27 @@ public class SearchActivity extends AppCompatActivity {
         return jsonRequest;
     }
 
+
+     /**
+     * refreshes the list
+     */
+    public void refresh() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
+
+
+        // Assign adapter to ListView
+        listView.setAdapter(adapter);
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
         return true;
     }
 
@@ -205,17 +226,6 @@ public class SearchActivity extends AppCompatActivity {
         Intent i = new Intent(SearchActivity.this, MainActivity.class);
         startActivity(i);
         //finish();
-    }
-     /**
-     * refreshes the list
-     */
-    public void refresh() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
-
-
-        // Assign adapter to ListView
-        listView.setAdapter(adapter);
     }
 
 }

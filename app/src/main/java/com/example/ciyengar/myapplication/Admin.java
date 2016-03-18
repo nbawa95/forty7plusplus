@@ -21,7 +21,8 @@ import java.util.HashMap;
 
 public class Admin extends AppCompatActivity {
 
-    public static ArrayList<String> users = new ArrayList<>();
+    public static ArrayList<User> users = new ArrayList<>();
+    public static ArrayList<String> userNames = new ArrayList<>();
     ListView userListView;
 
     @Override
@@ -33,7 +34,7 @@ public class Admin extends AppCompatActivity {
         Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, users);
+                android.R.layout.simple_list_item_1, android.R.id.text1, userNames);
 
         // Assign adapter to ListView
         userListView.setAdapter(adapter);
@@ -44,8 +45,10 @@ public class Admin extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // ListView Clicked item index
-                int itemPosition = position + 1;
-                String itemValue = (String) userListView.getItemAtPosition(position);
+                int itemPosition = position;
+                System.out.println(users.get(itemPosition).getId());
+                Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
+                usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(true);
             }
 
         });
@@ -55,7 +58,8 @@ public class Admin extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     System.out.println(child.child("name").getValue());
-                    users.add((String) child.child("name").getValue());
+                    users.add(new User((String) child.getKey(), (String) child.child("name").getValue(), (String) child.child("major").getValue(), false));
+                    userNames.add((String) child.child("name").getValue());
                 }
             }
             @Override
@@ -67,7 +71,7 @@ public class Admin extends AppCompatActivity {
 
     public void refresh() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, users);
+                android.R.layout.simple_list_item_1, android.R.id.text1, userNames);
         // Assign adapter to ListView
         userListView.setAdapter(adapter);
     }

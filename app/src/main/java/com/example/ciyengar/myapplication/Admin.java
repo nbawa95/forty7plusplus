@@ -48,7 +48,8 @@ public class Admin extends AppCompatActivity {
                 int itemPosition = position;
                 System.out.println(users.get(itemPosition).getId());
                 Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
-                usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(true);
+                Boolean currentlyBlocked = users.get(itemPosition).isBlocked();
+                usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(! currentlyBlocked);
             }
 
         });
@@ -58,7 +59,9 @@ public class Admin extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     System.out.println(child.child("name").getValue());
-                    users.add(new User((String) child.getKey(), (String) child.child("name").getValue(), (String) child.child("major").getValue(), false));
+                    User userA = new User((String) child.getKey(), (String) child.child("name").getValue(), (String) child.child("major").getValue(), false);
+                    userA.setBlocked((Boolean) child.child("blocked").getValue());
+                    users.add(userA);
                     userNames.add((String) child.child("name").getValue());
                 }
             }

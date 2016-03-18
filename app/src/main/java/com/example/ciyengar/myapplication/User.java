@@ -7,11 +7,13 @@ public class User {
     private String id;
     private String name;
     private String major;
+    private Boolean admin;
 
-    public User(String id, String name, String major) {
+    public User(String id, String name, String major, Boolean isAdmin) {
         this.id = id;
         this.name = name;
         this.major = major;
+        this.admin = isAdmin;
     }
 
     public void setId(String id) {
@@ -37,4 +39,6 @@ public class User {
     public String getMajor() {
         return major;
     }
+
+    public Boolean isAdmin() { return admin; }
 }

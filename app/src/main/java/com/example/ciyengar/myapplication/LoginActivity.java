@@ -170,27 +170,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        String name =  (String) ((Map<String, String>) snapshot.getValue()).get("name");
+                        String name = (String) ((Map<String, String>) snapshot.getValue()).get("name");
                         String major = (String) ((Map<String, String>) snapshot.getValue()).get("major");
-                        currentUser = new User((String) authData.getUid(), name, major);
+                        Boolean isAdmin = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("admin");
+                        Boolean isBlocked = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("blocked");
+                        Boolean isLocked = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("locked");
+                        if (isAdmin == null)
+                            isAdmin = false;
+                        currentUser = new User((String) authData.getUid(), name, major, isAdmin);
+                        System.out.println(isBlocked);
+                        if (isBlocked || isLocked) {
+                            mPasswordView.setError("Sorry! Your account has been blocked or locked.");
+                        } else if (currentUser.isAdmin()) {
+                            Intent intent = new Intent(LoginActivity.this, Admin.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
-
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
                         System.out.println("The read failed: " + firebaseError.getMessage());
                     }
                 });
-
-
-
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
             }
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 mPasswordView.setError("The username passord combination is incorrect");
-//                focusView = mPasswordView;
+                // should increment count for locked email
+                // focusView = mPasswordView;
                 // there was an error
             }
         });

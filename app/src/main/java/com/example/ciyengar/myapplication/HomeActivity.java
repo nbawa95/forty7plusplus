@@ -66,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             String name =  (String) ((Map<String, String>) snapshot.getValue()).get("name");
                             String major = (String) ((Map<String, String>) snapshot.getValue()).get("major");
-                            LoginActivity.currentUser = new User(id, name, major);
+                            LoginActivity.currentUser = new User(id, name, major, false);
                         }
 
                         @Override

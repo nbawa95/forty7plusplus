@@ -50,9 +50,6 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         firebaseRef = myFirebaseRef;
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {

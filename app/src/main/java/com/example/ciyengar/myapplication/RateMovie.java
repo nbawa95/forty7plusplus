@@ -232,8 +232,11 @@ public class RateMovie extends AppCompatActivity {
             } else {
                 double oRating = ratingInfo.get("overallRating");
                 double totalRated = ratingInfo.get("#totalRatings");
-                double majorRating = ratingInfo.get("majorRating") == null? 0 : ratingInfo.get("#majorRating");
+                double majorRating = ratingInfo.get("majorRating") == null? 0 : ratingInfo.get("majorRating");
                 double totalMajorRated = ratingInfo.get("#majorRating");
+                System.out.println(majorRating + " :Major rating before submit");
+                System.out.println(ratingInfo.get("yourRating") + " :Your previous rating");
+                System.out.println(rating + " :your new rating");
                 if (ratingInfo.get("yourRating") != null) {
                     oRating = (oRating*totalRated  - ratingInfo.get("yourRating") + rating) / (totalRated);
                     majorRating = (majorRating*totalMajorRated - ratingInfo.get("yourRating") + rating) / (totalMajorRated);

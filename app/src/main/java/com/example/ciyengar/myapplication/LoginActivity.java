@@ -251,6 +251,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child((String) result.get("uid"));
                     newUserRef.child("name").setValue(name);
                     newUserRef.child("major").setValue(major);
+                    newUserRef.child("admin").setValue(false);
+                    newUserRef.child("locked").setValue(false);
+                    newUserRef.child("blocked").setValue(false);
                     Context context = getApplicationContext();
                     CharSequence text = "Account successfully created";
                     int duration = Toast.LENGTH_SHORT;

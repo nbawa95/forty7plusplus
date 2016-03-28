@@ -5,10 +5,10 @@
     tools:context="com.javarticles.android.SearchableActivity">
 
     <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="100"
+        android:id="@+id/action_home"
         spotlight:showAsAction="never"
-        android:title="Refresh"/>
+        android:onClick="homeMenu"
+        android:title="Home"/>
 
     <item android:id="@+id/search"
         android:title="Search"
@@ -22,8 +22,9 @@
         spotlight:showAsAction="never">
     </item>
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings">
+        android:id="@+id/action_admin"
+        android:title="Admin"
+        android:onClick="adminMenu">
     </item>
     <item
         android:id="@+id/logout"

@@ -8,7 +8,7 @@ public class User {
     private String name;
     private String major;
     private Boolean admin;
-    private Boolean blocked;
+    private Boolean blocked, locked;
 
     public User(String id, String name, String major, Boolean isAdmin) {
         this.id = id;
@@ -31,6 +31,8 @@ public class User {
 
     public void setBlocked(Boolean isBlocked) { this.blocked = isBlocked; }
 
+    public void setLocked(Boolean isLocked) {locked = isLocked;}
+
     public String getId() {
         return id;
     }
@@ -46,4 +48,6 @@ public class User {
     public Boolean isAdmin() { return admin; }
 
     public Boolean isBlocked() { return blocked; }
+
+    public Boolean isLocked() {return locked;}
 }

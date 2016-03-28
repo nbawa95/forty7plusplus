@@ -1,11 +1,18 @@
 package com.example.ciyengar.myapplication;
 
+import android.app.SearchManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,13 +35,17 @@ public class Admin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        System.out.println(LoginActivity.currentUser.isAdmin());
         setContentView(R.layout.activity_admin);
+
+        System.out.println(LoginActivity.currentUser + " Current user");
+
+        users.clear();
+        //instantiate custom adapter
+        MyCustomAdapter adapter = new MyCustomAdapter(users, this);
+
+;
         userListView = (ListView) findViewById(R.id.userList);
         Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/");
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, userNames);
 
         // Assign adapter to ListView
         userListView.setAdapter(adapter);
@@ -49,7 +60,7 @@ public class Admin extends AppCompatActivity {
                 System.out.println(users.get(itemPosition).getId());
                 Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
                 Boolean currentlyBlocked = users.get(itemPosition).isBlocked();
-                usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(! currentlyBlocked);
+                usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(!currentlyBlocked);
             }
 
         });
@@ -59,7 +70,8 @@ public class Admin extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
                     System.out.println(child.child("name").getValue());
-                    User userA = new User((String) child.getKey(), (String) child.child("name").getValue(), (String) child.child("major").getValue(), false);
+                    User userA = new User((String) child.getKey(), (String) child.child("name").getValue(),
+                            (String) child.child("major").getValue(), (Boolean) child.child("admin").getValue());
                     userA.setBlocked((Boolean) child.child("blocked").getValue());
                     users.add(userA);
                     userNames.add((String) child.child("name").getValue());
@@ -78,5 +90,35 @@ public class Admin extends AppCompatActivity {
         // Assign adapter to ListView
         userListView.setAdapter(adapter);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_xml, menu);
+
+        MenuItem item = menu.findItem(R.id.action_admin);
+        item.setVisible(false);
+        menu.findItem(R.id.profile).setVisible(false);
+        return true;
+    }
+
+    public void profileMenu(MenuItem item) {
+        Intent i = new Intent(Admin.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void logoutMenu(MenuItem view) {
+        return;
+    }
+
+    public void adminMenu(MenuItem view) {
+        return;
+    }
+
+    public void homeMenu(MenuItem view) {
+        startActivity(new Intent(Admin.this, HomeActivity.class));
+    }
+
 
 }

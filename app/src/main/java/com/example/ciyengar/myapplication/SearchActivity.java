@@ -124,7 +124,7 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * updates the movies in the list
-     * @param view button view
+     * @param search button view
      */
     public void updateMovies(String search) {
         //EditText searchBar = (EditText) findViewById(R.id.searchBar);
@@ -206,6 +206,14 @@ public class SearchActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
 
+        MenuItem item = menu.findItem(R.id.action_admin);
+        if (LoginActivity.currentUser != null && LoginActivity.currentUser.isAdmin() != null &&
+                LoginActivity.currentUser.isAdmin()) {
+            item.setVisible(true);
+        } else {
+            item.setVisible(false);
+        }
+
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -213,16 +221,23 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
+    public void profileMenu(MenuItem item) {
+        Intent i = new Intent(SearchActivity.this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();
     }
 
-    public void profileMenu(MenuItem item) {
-        finish();
-        Intent i = new Intent(SearchActivity.this, MainActivity.class);
-        startActivity(i);
-        //finish();
+    public void adminMenu(MenuItem view) {
+        startActivity(new Intent(SearchActivity.this, Admin.class));
+    }
+
+    public void homeMenu(MenuItem view) {
+        startActivity(new Intent(SearchActivity.this, HomeActivity.class));
     }
 
 }

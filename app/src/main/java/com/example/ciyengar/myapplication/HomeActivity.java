@@ -66,7 +66,20 @@ public class HomeActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             String name =  (String) ((Map<String, String>) snapshot.getValue()).get("name");
                             String major = (String) ((Map<String, String>) snapshot.getValue()).get("major");
-                            LoginActivity.currentUser = new User(id, name, major, false);
+                            Boolean isAdmin = (Boolean) (snapshot.child("admin").getValue());
+                            Boolean isLocked = (Boolean) snapshot.child("locked").getValue();
+                            Boolean isBlocked = (Boolean) snapshot.child("blocked").getValue();
+                            if (isLocked || isBlocked) {
+                                firebaseRef.unauth();
+                                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+
+                            LoginActivity.currentUser = new User(id, name, major, isAdmin);
+                            LoginActivity.currentUser.setBlocked(isBlocked);
+                            LoginActivity.currentUser.setLocked(isLocked);
                         }
 
                         @Override
@@ -226,6 +239,38 @@ public class HomeActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
 
+        final MenuItem item = menu.findItem(R.id.action_admin);
+        Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        newRef.addAuthStateListener(new Firebase.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(AuthData authData) {
+                if (authData != null) {
+                    final String id = (String) authData.getUid();
+                    // user is logged in
+                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(id);
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        boolean noMovies = true;
+
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            boolean isAdmin = (Boolean) snapshot.child("admin").getValue();
+                            if (isAdmin) {
+                                item.setVisible(true);
+                            } else {
+                                item.setVisible(false);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            System.out.println("The read failed: " + firebaseError.getMessage());
+                        }
+
+                    });
+                }
+            }
+        });
+
 
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -244,5 +289,13 @@ public class HomeActivity extends AppCompatActivity {
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();
+    }
+
+    public void adminMenu(MenuItem view) {
+        startActivity(new Intent(HomeActivity.this, Admin.class));
+    }
+
+    public void homeMenu(MenuItem view) {
+        return;
     }
 }

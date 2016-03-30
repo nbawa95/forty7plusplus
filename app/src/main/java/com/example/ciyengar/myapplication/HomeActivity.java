@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
+
         myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         setContentView(R.layout.activity_home);
         Firebase.setAndroidContext(this);
@@ -142,7 +143,6 @@ public class HomeActivity extends AppCompatActivity {
         if (authData != null) {
             Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("ratings");
             if (userRef == null) {
-                System.out.println("USERREF IS NULL FOR SOME REASON");
                 movieTitles.add("No movies for you");
                 refresh();
                 return;
@@ -283,12 +283,12 @@ public class HomeActivity extends AppCompatActivity {
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(i);
-        finish();
     }
 
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();
+        startActivity(new Intent(HomeActivity.this, LoginActivity.class));
     }
 
     public void adminMenu(MenuItem view) {

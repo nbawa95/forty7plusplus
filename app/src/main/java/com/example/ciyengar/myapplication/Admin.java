@@ -43,7 +43,7 @@ public class Admin extends AppCompatActivity {
         //instantiate custom adapter
         MyCustomAdapter adapter = new MyCustomAdapter(users, this);
 
-;
+
         userListView = (ListView) findViewById(R.id.userList);
         Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/");
 
@@ -72,6 +72,7 @@ public class Admin extends AppCompatActivity {
                     System.out.println(child.child("name").getValue());
                     User userA = new User((String) child.getKey(), (String) child.child("name").getValue(),
                             (String) child.child("major").getValue(), (Boolean) child.child("admin").getValue());
+                    userA.setLocked((Boolean) child.child("locked").getValue());
                     userA.setBlocked((Boolean) child.child("blocked").getValue());
                     users.add(userA);
                     userNames.add((String) child.child("name").getValue());
@@ -109,7 +110,10 @@ public class Admin extends AppCompatActivity {
     }
 
     public void logoutMenu(MenuItem view) {
-        return;
+        Firebase firebaseRef = new Firebase("https://moviespotlight.firebaseio.com");
+        firebaseRef.unauth();
+        finish();
+        startActivity(new Intent(Admin.this, LoginActivity.class));
     }
 
     public void adminMenu(MenuItem view) {

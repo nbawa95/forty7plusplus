@@ -1,6 +1,7 @@
 package com.example.ciyengar.myapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,14 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         }
 
         final User thisUser = userList.get(position);
+        System.out.println("The position is " + position);
+        System.out.println(userList.toString());
+        System.out.println(thisUser.toString());
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.user_item);
         listItemText.setText((String) thisUser.getName());
+
+        listItemText.setTextColor(thisUser.isLocked() ? Color.RED : Color.GREEN);
 
         Switch blockSwitch = (Switch)view.findViewById(R.id.blocked_switch);
         blockSwitch.setChecked(thisUser.isBlocked());
@@ -69,6 +75,19 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
                 thisUser.setBlocked(!thisUser.isBlocked());
                 usersRef.child(thisUser.getId()).child("blocked").setValue(thisUser.isBlocked());
+            }
+        });
+
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
+                thisUser.setLocked(false);
+                usersRef.child(thisUser.getId()).child("locked").setValue(false);
+                usersRef.child(thisUser.getId()).child("numLoginAttempts").setValue(0);
+                TextView listItemText = (TextView)v.findViewById(R.id.user_item);
+                listItemText.setTextColor(Color.GREEN);
             }
         });
 

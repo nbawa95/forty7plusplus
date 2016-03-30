@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.lang.Math;
 
 /**
  * A login screen that offers login via email/password.
@@ -181,7 +182,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         System.out.println(isBlocked);
                         if (isBlocked || isLocked) {
                             mPasswordView.setError("Sorry! Your account has been blocked or locked.");
-                        } else if (currentUser.isAdmin()) {
+                            return;
+                        }
+                        Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+                        newRef.child("numLoginAttempts").setValue(0);
+                        if (currentUser.isAdmin()) {
                             Intent intent = new Intent(LoginActivity.this, Admin.class);
                             startActivity(intent);
                             finish();
@@ -199,7 +204,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
-                mPasswordView.setError("The username passord combination is incorrect");
+                mPasswordView.setError(firebaseError.getMessage());
+                if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
+                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("contact").child(encrypt(mEmailView.getText().toString()));
+                    System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
+                    userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            final String uid = (String) snapshot.getValue();
+                            System.out.println("UID acquired is: " + uid);
+                            Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
+                            newRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    long numLoginAttempts = (Long) dataSnapshot.child("numLoginAttempts").getValue();
+                                    numLoginAttempts++;
+                                    Firebase anotherRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
+                                    anotherRef.child("numLoginAttempts").setValue(numLoginAttempts);
+                                    if (numLoginAttempts > 3) {
+                                        anotherRef.child("locked").setValue(true);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(FirebaseError firebaseError) {
+                                    return;
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+                            System.out.println("The read failed: " + firebaseError.getMessage());
+                        }
+                    });
+                }
                 // should increment count for locked email
                 // focusView = mPasswordView;
                 // there was an error
@@ -248,12 +287,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 @Override
                 public void onSuccess(Map<String, Object> result) {
                     System.out.println("Successfully created user account with uid: " + result.get("uid"));
-                    Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child((String) result.get("uid"));
+                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com");
+
+                    userRef.child("contact").child(encrypt(registerUsernameView.getText().toString())).setValue(result.get("uid"));
+
+                    Firebase newUserRef = userRef.child("users").child((String) result.get("uid"));
                     newUserRef.child("name").setValue(name);
                     newUserRef.child("major").setValue(major);
                     newUserRef.child("admin").setValue(false);
                     newUserRef.child("locked").setValue(false);
                     newUserRef.child("blocked").setValue(false);
+                    newUserRef.child("numLoginAttempts").setValue(0);
                     Context context = getApplicationContext();
                     CharSequence text = "Account successfully created";
                     int duration = Toast.LENGTH_SHORT;
@@ -282,6 +326,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
     }
+
+    private String encrypt(String email) {
+        return email.replace('.', '*');
+    }
+
+    private String decrypt(String email) {
+        return email.replace("*", ".");
+    }
+
 
     private boolean isUsernameValid(String username) {
         if (username.length() < 5)

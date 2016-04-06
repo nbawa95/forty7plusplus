@@ -8,8 +8,20 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/spotlightBackground"
     tools:context="com.example.ciyengar.myapplication.LoginActivity"
     android:weightSum="1">
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/spotlightImage"
+        >
+    </ImageView>
 
     <!-- Login progress -->
     <ProgressBar
@@ -33,6 +45,7 @@
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
+                android:textColorHint="#FFC101"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -44,12 +57,14 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:textColor="#FFC101"
                     android:allowUndo="false" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:textColorHint="#FFC101"
                 android:layout_height="wrap_content">
 
                 <EditText
@@ -57,6 +72,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
+                    android:textColorHint="#FFC101"
+                    android:textColor="#FFC101"
+                    android:fontFamily="sans-serif"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
                     android:imeOptions="actionUnspecified"
@@ -73,6 +91,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
+                android:textColor="#000000"
+                android:background="#FFC101"
                 android:textStyle="bold" />
 
 
@@ -83,6 +103,15 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dip"
+        android:fontFamily="sans-serif"
+        android:textColor="#FFC101"
+        android:text="New? Register below?" />
 
     <ScrollView
         android:id="@+id/register_form"
@@ -98,6 +127,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:textColorHint="#FFC101"
             android:layout_height="wrap_content">
             <AutoCompleteTextView
                 android:id="@+id/name"
@@ -119,12 +149,15 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:textColorHint="#FFC101"
             android:layout_height="wrap_content">
             <AutoCompleteTextView
                 android:id="@+id/register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
+                android:textColorHint="#FFC101"
+                android:textColor="#FFC101"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -157,6 +190,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Register"
+            android:textColor="#000000"
+            android:background="#FFC101"
             android:textStyle="bold" />
 
 

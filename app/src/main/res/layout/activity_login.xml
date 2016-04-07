@@ -74,6 +74,7 @@
                     android:hint="Password"
                     android:textColorHint="#FFC101"
                     android:textColor="#FFC101"
+                    android:textColorHighlight="#FFC101"
                     android:fontFamily="sans-serif"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
@@ -178,6 +179,7 @@
                 android:imeActionLabel="@string/action_sign_in"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
+                android:textColor="#FFC101"
                 android:maxLines="1"
                 android:singleLine="true" />
 

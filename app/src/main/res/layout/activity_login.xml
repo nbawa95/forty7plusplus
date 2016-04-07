@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/spotlightBackground"
+    android:background="@drawable/spotlightbackground"
     tools:context="com.example.ciyengar.myapplication.LoginActivity"
     android:weightSum="1">
 
@@ -19,7 +19,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="4dp"
-        android:src="@drawable/spotlightImage"
+        android:src="@drawable/spotlightimage"
         >
     </ImageView>
 
@@ -116,7 +116,7 @@
     <ScrollView
         android:id="@+id/register_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:focusable="false">
 
     <LinearLayout

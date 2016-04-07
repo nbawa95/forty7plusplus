@@ -48,7 +48,7 @@ import java.lang.Math;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
     private String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
 "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
@@ -64,9 +64,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public static User currentUser;
     private View mProgressView;
     private View mLoginFormView;
-    private AutoCompleteTextView registerUsernameView, registerNameView;
-    private EditText registerPasswordView;
-    private NumberPicker majorPicker;
     private Button registerButton;
     private Button mEmailSignInButton;
 
@@ -99,22 +96,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-
-        registerUsernameView = (AutoCompleteTextView) findViewById(R.id.register_email);
-        registerNameView = (AutoCompleteTextView) findViewById(R.id.name);
-
-        majorPicker = (NumberPicker) findViewById(R.id.major_picker);
-        majorPicker.setMinValue(0);// restricted number to minimum value i.e 1
-        majorPicker.setMaxValue(majors.length - 1);// restricked number to maximum value i.e. 31
-        //majorPicker.setWrapSelectorWheel(true); 
-        majorPicker.setDisplayedValues(majors);
-        registerPasswordView = (EditText) findViewById(R.id.register_password);
-
-        registerButton = (Button) findViewById(R.id.register_button);
+        registerButton = (Button) findViewById(R.id.go_to_register);
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerMe();
+                goToRegister();
             }
         });
 
@@ -125,6 +111,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private void populateAutoComplete() {
         return;
 //        getLoaderManager().initLoader(0, null, this);
+    }
+
+    private void goToRegister() {
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -246,196 +237,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
     }
 
-    private void registerMe() {
-        Firebase ref = new Firebase("https://moviespotlight.firebaseio.com");
-        String username = registerUsernameView.getText().toString();
-        String password = registerPasswordView.getText().toString();
-        final String name = registerNameView.getText().toString();
-        int majorIndex = majorPicker.getValue();
-        final String major = majors[majorIndex];
-        boolean cancel = false;
-        View focusView = null;
-
-        if (!isPasswordValid(password)) {
-            registerPasswordView.setError("Password either too short or conatins ':'");
-            focusView = registerPasswordView;
-            cancel = true;
-        }
-
-        if (!isUsernameValid(username)) {
-            registerUsernameView.setError("username taken or too short");
-            focusView = registerUsernameView;
-            cancel = true;
-        }
-
-        if (name.length() < 2) {
-            registerNameView.setError("Your name is too short");
-            focusView = registerButton;
-            cancel = true;
-        }
-
-        if (majorIndex == 0) {
-            registerButton.setError("You must pick a major");
-            focusView = registerButton;
-            cancel = true;
-        }
-
-        if (cancel) {
-            focusView.requestFocus();
-        } else {
-            ref.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
-                @Override
-                public void onSuccess(Map<String, Object> result) {
-                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
-                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com");
-
-                    userRef.child("contact").child(encrypt(registerUsernameView.getText().toString())).setValue(result.get("uid"));
-
-                    Firebase newUserRef = userRef.child("users").child((String) result.get("uid"));
-                    newUserRef.child("name").setValue(name);
-                    newUserRef.child("major").setValue(major);
-                    newUserRef.child("admin").setValue(false);
-                    newUserRef.child("locked").setValue(false);
-                    newUserRef.child("blocked").setValue(false);
-                    newUserRef.child("numLoginAttempts").setValue(0);
-                    Context context = getApplicationContext();
-                    CharSequence text = "Account successfully created";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-
-                }
-                @Override
-                public void onError(FirebaseError firebaseError) {
-                    System.out.println("ERROR: " + firebaseError.getMessage());
-                    Context context = getApplicationContext();
-                    CharSequence text = "ERROR: " + firebaseError.getMessage();
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                }
-            });
-//            String user = username + ":" + password + ":" + name + ":" + major;
-//            DATABASE.add(user);
-//            String[] pieces = user.split(":");
-//            String index = String.valueOf(DATABASE.indexOf(user));
-//            String[] extend = Arrays.copyOf(pieces, 5);
-//            extend[4] = index;
-//            CURRENTLOGIN = extend;
-//            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-        }
-
-    }
-
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
 
     private String decrypt(String email) {
         return email.replace("*", ".");
-    }
-
-
-    private boolean isUsernameValid(String username) {
-        if (username.length() < 5)
-            return false;
-        return true;
-    }
-
-    private boolean isPasswordValid(String password) {
-        if (password.length() < 5 || password.contains(":"))
-            return false;
-        return true;
-    }
-
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 
 }

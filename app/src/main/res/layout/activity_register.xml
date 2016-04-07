@@ -33,31 +33,53 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="wrap_content"
         android:focusable="false">
 
         <LinearLayout
-            android:id="@+id/email_login_form"
+            android:id="@+id/email_register_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
-                android:textColorHint="#FFC101"
                 android:layout_width="match_parent"
+                android:textColorHint="#FFC101"
                 android:layout_height="wrap_content">
-
                 <AutoCompleteTextView
-                    android:id="@+id/email"
+                    android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="Name"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
+                    android:allowUndo="false" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <NumberPicker
+                android:layout_width="match_parent"
+                android:layout_height="61dp"
+                android:id="@+id/major_picker"
+                android:layout_gravity="center_horizontal" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:textColorHint="#FFC101"
+                android:layout_height="wrap_content">
+                <AutoCompleteTextView
+                    android:id="@+id/register_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_email"
+                    android:textColorHint="#FFC101"
                     android:textColor="#FFC101"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
                     android:allowUndo="false" />
 
             </android.support.design.widget.TextInputLayout>
@@ -68,30 +90,28 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/register_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
-                    android:textColorHint="#FFC101"
-                    android:textColor="#FFC101"
-                    android:textColorHighlight="#FFC101"
-                    android:fontFamily="sans-serif"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
+                    android:textColor="#FFC101"
+                    android:textColorHint="#FFC101"
                     android:maxLines="1"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/register_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
+                android:text="Register"
                 android:textColor="#000000"
                 android:background="#FFC101"
                 android:textStyle="bold" />
@@ -104,16 +124,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/go_to_register"
-        style="?android:textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="New? Create an account"
-        android:textColor="#000000"
-        android:background="#FFC101"
-        android:textStyle="bold" />
-
 </LinearLayout>

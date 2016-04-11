@@ -11,17 +11,6 @@ import java.util.HashMap;
  * Created by Dhruv Sagar on 11-Apr-16.
  */
 public class Connector {
-<<<<<<< HEAD
-    /**
-     * Profile Changes Are Successful
-     * @param newPassword the new passworld
-     * @param nameString the new name
-     * @param majorIndex the major
-     */
-    public static void profileChangeSuccessful(String newPassword, String nameString, int majorIndex) {
-=======
->>>>>>> 65b409f53c2473c817e6fe4ea36fc55e17a38c89
-
     private static String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
             "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
             "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",

@@ -44,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     private Firebase myFirebaseRef;
     private ListView listView;
     private String databaseLink = "https://moviespotlight.firebaseio.com/";
-    private String noMovies = "No movies for you";
+    private String noMoviesMessage = "No movies for you";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (movieTitles.contains(noMovies)) {
+                if (movieTitles.contains(noMoviesMessage)) {
                     return;
                 }
                 // ListView Clicked item index
@@ -146,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         if (authData != null) {
             Firebase userRef = new Firebase(databaseLink).child("ratings");
             if (userRef == null) {
-                movieTitles.add(noMovies);
+                movieTitles.add(noMoviesMessage);
                 refresh();
                 return;
             }
@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                     if (noMovies) {
-                        movieTitles.add("No movies for you");
+                        movieTitles.add(noMoviesMessage);
                         refresh();
                     } else {
                         callVolley(movieIds);
@@ -214,7 +214,7 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {   // the response is already constructed as a JSONObject!
                         try {
-                            if(movieTitles.contains(noMovies)) {
+                            if(movieTitles.contains(noMoviesMessage)) {
                                 movieTitles.clear();
                             }
                             String movieTitle = response.getString("Title");

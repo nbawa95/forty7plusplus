@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Firebase.setAndroidContext(this);
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
-        firebaseRef = myFirebaseRef;
+        firebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -84,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+                            // System.out.println("The read failed: " + firebaseError.getMessage());
                         }
                     });
                 } else {
@@ -134,10 +134,13 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         populateRecommendations();
-        System.out.println(movieTitles.toString() + " :Before final refresh");
+        // System.out.println(movieTitles.toString() + " :Before final refresh");
         refresh();
     }
 
+    /**
+     * Populates Recommendations
+     */
     public void populateRecommendations() {
         AuthData authData = myFirebaseRef.getAuth();
         if (authData != null) {
@@ -153,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     ArrayList<String> movieIds = new ArrayList<String>();
                     for(DataSnapshot movie : snapshot.getChildren()) {
+<<<<<<< HEAD
                         System.out.println(movie.getValue().toString());
                         System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
                         System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
@@ -163,6 +167,17 @@ public class HomeActivity extends AppCompatActivity {
                                 && Double.parseDouble((String)
                                         movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= minRecommendationRating) {
                             System.out.println(movie.getKey() + ": movie key");
+=======
+                        // System.out.println(movie.getValue().toString());
+                        // System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
+                        // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
+                        // System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
+                        if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
+                                !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
+                                && Double.parseDouble((String)
+                                        movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= 4) {
+                            // System.out.println(movie.getKey() + ": movie key");
+>>>>>>> origin/master
                             movieIds.add(movie.getKey());
 
                             noMovies = false;
@@ -174,11 +189,11 @@ public class HomeActivity extends AppCompatActivity {
                     } else {
                         callVolley(movieIds);
                     }
-                    System.out.println(movieTitles.toString());
+                    // System.out.println(movieTitles.toString());
                 }
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    System.out.println("The read failed: " + firebaseError.getMessage());
+                    // System.out.println("The read failed: " + firebaseError.getMessage());
                 }
             });
             refresh();
@@ -186,19 +201,27 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Calls a Volley
+     * @param movieIds The ID of the movie
+     */
     public void callVolley(ArrayList<String> movieIds) {
         for (String movieId : movieIds) {
             Volley.newRequestQueue(this).add(moreMovieInfo(movieId));
         }
-        System.out.println("Refresh in callVolley() happening");
-        System.out.println(movieTitles.toString() + " :movie titles");
+        // System.out.println("Refresh in callVolley() happening");
+        // System.out.println(movieTitles.toString() + " :movie titles");
         refresh();
     }
 
-
+    /**
+     * Request to get more Movie Information
+     * @param movieID the movie ID
+     * @return Movie ID
+     */
     public JsonRequest moreMovieInfo(final String movieID) {
         String url = "http://www.omdbapi.com/?i=" + movieID + "&plot=full&r=json";
-        System.out.println("GOT TO THE METHOD!!!!");
+        // System.out.println("GOT TO THE METHOD!!!!");
         JsonObjectRequest jsonRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -211,10 +234,10 @@ public class HomeActivity extends AppCompatActivity {
                             String movieTitle = response.getString("Title");
                             String movieYear = response.getString("Year");
                             String posterURL = response.getString("Poster");
-                            System.out.println("Title: " + movieTitle);
+                            // System.out.println("Title: " + movieTitle);
                             movieList.add(new Movie(movieTitle, movieYear, movieID, posterURL));
                             movieTitles.add(movieTitle);
-                            System.out.println(movieTitles.toString());
+                            // System.out.println(movieTitles.toString());
                             refresh();
                         } catch (JSONException e) {
                             Log.e("HomeActivity" ,e.getMessage());
@@ -229,6 +252,9 @@ public class HomeActivity extends AppCompatActivity {
         return jsonRequest;
     }
 
+    /**
+     * refreshes screen
+     */
     public void refresh() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
@@ -267,7 +293,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+                            // System.out.println("The read failed: " + firebaseError.getMessage());
                         }
 
                     });
@@ -284,21 +310,38 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Menu profile
+     * @param item item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(i);
     }
 
+    /**
+     * Menu to Logout
+     * @param view viewing
+     */
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();
         startActivity(new Intent(HomeActivity.this, LoginActivity.class));
     }
 
+    /**
+     * Medu for Admins
+     * @param view view
+     */
+
     public void adminMenu(MenuItem view) {
         startActivity(new Intent(HomeActivity.this, Admin.class));
     }
 
+    /**
+     * Home Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         return;
     }

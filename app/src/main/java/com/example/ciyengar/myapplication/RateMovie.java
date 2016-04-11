@@ -86,7 +86,7 @@ public class RateMovie extends AppCompatActivity {
                 }, 0, 0, null,
                 new Response.ErrorListener() {
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("error");
+                        // System.out.println("error");
                     }
                 });
         // Access the RequestQueue through your singleton class.
@@ -96,6 +96,11 @@ public class RateMovie extends AppCompatActivity {
         pullRating();
     }
 
+    /**
+     * What happens when Options Menu  is created
+     * @param menu the menu
+     * @return a boolean as to whether or not the menu has been created
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
@@ -116,25 +121,44 @@ public class RateMovie extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * the logout menu
+     * @param view the view
+     */
     public void logoutMenu(MenuItem view) {
         myFirebaseRef.unauth();
         finish();
     }
 
+    /**
+     * Profile Menu
+     * @param item Menu item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(RateMovie.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Admin Menu
+     * @param view view
+     */
     public void adminMenu(MenuItem view) {
         startActivity(new Intent(RateMovie.this, Admin.class));
     }
 
+    /**
+     * Home Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         startActivity(new Intent(RateMovie.this, HomeActivity.class));
     }
 
+    /**
+     * Pulls Ratings for user
+     */
     public void pullRating() {
         yourRating = (TextView)findViewById(R.id.your_rating);
         overallRating = (TextView) findViewById((R.id.overall_rating));
@@ -163,25 +187,25 @@ public class RateMovie extends AppCompatActivity {
                     ratingInfo = new HashMap<String, Double>();
                     try {
                         ratingInfo.put("overallRating", Double.parseDouble((String) ratingData.child("overallRating").getValue()));
-                        System.out.println(ratingInfo.toString());
+                        // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put("overallRating", null);
                     }
                     try {
                         ratingInfo.put("#totalRatings", Double.parseDouble((String) ratingData.child("NumtotalRatings").getValue()));
-                        System.out.println(ratingInfo.toString());
+                        // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put("#totalRatings", 0.0);
                     }
                     try {
                         ratingInfo.put("majorRating", Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
-                        System.out.println(ratingInfo.toString());
+                        // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put("majorRating", null);
                     }
                     try {
                         ratingInfo.put("#majorRating", Double.parseDouble((String) ratingData.child("Num" + LoginActivity.currentUser.getMajor()).getValue()));
-                        System.out.println(ratingInfo.toString());
+                        // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put("#majorRating", 0.0);
                     }
@@ -191,20 +215,20 @@ public class RateMovie extends AppCompatActivity {
                         yourRating.setVisibility(View.GONE);
                     } else {
                         ratingInfo.put("yourRating", Double.parseDouble((String) ((HashMap<String, String>) yourRatingData.child(LoginActivity.currentUser.getId()).getValue()).get("rating")));
-                        System.out.println(ratingInfo.toString());
-                        System.out.println("This is happening HERE ------");
-                        yourRating.setText("Your rating: " + String.valueOf(ratingInfo.get("yourRating")));
+                        // System.out.println(ratingInfo.toString());
+                        // System.out.println("This is happening HERE ------");
+                        yourRating.setText("Your rating: " + ratingInfo.get("yourRating"));
                         yourRating.setVisibility(View.VISIBLE);
                     }
                     if (ratingInfo != null) {
-                        overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + String.valueOf(ratingInfo.get("overallRating")));
+                        overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + ratingInfo.get("overallRating"));
                         overallRating.setVisibility(View.VISIBLE);
-                        System.out.println("This is happening");
+                        // System.out.println("This is happening");
                         if (ratingInfo.get("majorRating") == null) {
                             majorRating.setVisibility(View.GONE);
                         } else {
-                            System.out.println("This is also happening");
-                            majorRating.setText("Major rating: " + String.valueOf(ratingInfo.get("majorRating")));
+                            // System.out.println("This is also happening");
+                            majorRating.setText("Major rating: " + ratingInfo.get("majorRating"));
                             majorRating.setVisibility(View.VISIBLE);
                         }
                     }
@@ -212,7 +236,7 @@ public class RateMovie extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    System.out.println("The read failed: " + firebaseError.getMessage());
+                    // System.out.println("The read failed: " + firebaseError.getMessage());
                 }
             });
         }
@@ -229,13 +253,13 @@ public class RateMovie extends AppCompatActivity {
         if (Connector.addMovieRating(currentMovie, ratingInfo, rating)) {
             finish();
         } else {
-            System.out.println("there was an error");
+            // System.out.println("there was an error");
         }
     }
 
     /**
      * Request movie info from title
-     * @param movieID
+     * @param movieID the movie ID
      * @return JsonRequest
      */
     public JsonRequest moreMovieInfo(String movieID) {

@@ -23,7 +23,11 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
 
 
-
+    /**
+     * The custom adapter
+     * @param users the users
+     * @param context the context
+     */
     public MyCustomAdapter(ArrayList<User> users, Context context) {
         userList = users;
         this.context = context;
@@ -54,9 +58,9 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         }
 
         final User thisUser = userList.get(position);
-        System.out.println("The position is " + position);
-        System.out.println(userList.toString());
-        System.out.println(thisUser.toString());
+        // System.out.println("The position is " + position);
+        // System.out.println(userList.toString());
+        // System.out.println(thisUser.toString());
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.user_item);
         listItemText.setText((String) thisUser.getName());

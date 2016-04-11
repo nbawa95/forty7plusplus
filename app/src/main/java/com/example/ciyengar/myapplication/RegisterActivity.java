@@ -57,6 +57,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Registers a User
+     */
     private void registerMe() {
         Firebase ref = new Firebase("https://moviespotlight.firebaseio.com");
         String username = registerUsernameView.getText().toString();
@@ -91,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
             ref.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
-                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
+                    // System.out.println("Successfully created user account with uid: " + result.get("uid"));
                     Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com");
 
                     userRef.child("contact").child(encrypt(registerUsernameView.getText().toString())).setValue(result.get("uid"));
@@ -113,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onError(FirebaseError firebaseError) {
-                    System.out.println("ERROR: " + firebaseError.getMessage());
+                    // System.out.println("ERROR: " + firebaseError.getMessage());
                     Context context = getApplicationContext();
                     CharSequence text = "ERROR: " + firebaseError.getMessage();
                     int duration = Toast.LENGTH_SHORT;
@@ -125,10 +128,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Encrypts email
+     * @param email the users email
+     * @return an encrypted string
+     */
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
 
+    /**
+     * checks for valid password
+     * @param password the password
+     * @return boolean
+     */
     private boolean isPasswordValid(String password) {
         int minPasswordLength = 5;
         if (password.length() < minPasswordLength) {

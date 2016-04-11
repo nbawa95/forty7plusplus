@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-        } else {
-            // should logout... this should never happen
         }
     }
 

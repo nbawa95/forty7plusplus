@@ -8,12 +8,10 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.LruCache;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -22,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
@@ -33,14 +30,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RateMovie extends AppCompatActivity {
 
@@ -49,6 +42,8 @@ public class RateMovie extends AppCompatActivity {
     private static RequestQueue movieInfo;
     private HashMap<String, Double> ratingInfo;
     private TextView yourRating, overallRating, majorRating;
+    private String overallRatingString = "overallRating";
+    private String majorRatingString = "majorRating";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,10 +161,10 @@ public class RateMovie extends AppCompatActivity {
                     DataSnapshot ratingData = snapshot.child(currentMovie.getID());
                     ratingInfo = new HashMap<String, Double>();
                     try {
-                        ratingInfo.put("overallRating", Double.parseDouble((String) ratingData.child("overallRating").getValue()));
+                        ratingInfo.put(overallRatingString, Double.parseDouble((String) ratingData.child(overallRatingString).getValue()));
                         System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
-                        ratingInfo.put("overallRating", null);
+                        ratingInfo.put(overallRatingString, null);
                     }
                     try {
                         ratingInfo.put("#totalRatings", Double.parseDouble((String) ratingData.child("NumtotalRatings").getValue()));
@@ -178,10 +173,10 @@ public class RateMovie extends AppCompatActivity {
                         ratingInfo.put("#totalRatings", 0.0);
                     }
                     try {
-                        ratingInfo.put("majorRating", Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
+                        ratingInfo.put(majorRatingString, Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
                         System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
-                        ratingInfo.put("majorRating", null);
+                        ratingInfo.put(majorRatingString, null);
                     }
                     try {
                         ratingInfo.put("#majorRating", Double.parseDouble((String) ratingData.child("Num" + LoginActivity.currentUser.getMajor()).getValue()));
@@ -201,14 +196,14 @@ public class RateMovie extends AppCompatActivity {
                         yourRating.setVisibility(View.VISIBLE);
                     }
                     if (ratingInfo != null) {
-                        overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + String.valueOf(ratingInfo.get("overallRating")));
+                        overallRating.setText(ratingInfo.get(overallRatingString) == null ? "Not Rated" : "Overall rating: " + String.valueOf(ratingInfo.get(overallRatingString)));
                         overallRating.setVisibility(View.VISIBLE);
                         System.out.println("This is happening");
-                        if (ratingInfo.get("majorRating") == null) {
+                        if (ratingInfo.get(majorRatingString) == null) {
                             majorRating.setVisibility(View.GONE);
                         } else {
                             System.out.println("This is also happening");
-                            majorRating.setText("Major rating: " + String.valueOf(ratingInfo.get("majorRating")));
+                            majorRating.setText("Major rating: " + String.valueOf(ratingInfo.get(majorRatingString)));
                             majorRating.setVisibility(View.VISIBLE);
                         }
                     }

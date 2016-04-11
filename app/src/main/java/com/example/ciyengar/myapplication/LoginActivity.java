@@ -34,9 +34,11 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     public static User currentUser;
-    private View mLoginFormView;
+    //private View mLoginFormView;
     private Button registerButton;
     private Button mEmailSignInButton;
+    private String users = "users";
+    private String databaseLink = "https://moviespotlight.firebaseio.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthenticated(final AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
 
-                Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+                Firebase userRef = new Firebase(databaseLink).child(users).child((String) authData.getUid());
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -137,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             mPasswordView.setError("Sorry! Your account has been blocked or locked.");
                             return;
                         }
-                        Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+                        Firebase newRef = new Firebase(databaseLink).child(users).child((String) authData.getUid());
                         newRef.child("numLoginAttempts").setValue(0);
                         if (currentUser.isAdmin()) {
                             Intent intent = new Intent(LoginActivity.this, Admin.class);
@@ -159,20 +161,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthenticationError(FirebaseError firebaseError) {
                 mPasswordView.setError(firebaseError.getMessage());
                 if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
-                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("contact").child(encrypt(mEmailView.getText().toString()));
+                    Firebase userRef = new Firebase(databaseLink).child("contact").child(encrypt(mEmailView.getText().toString()));
                     System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             final String uid = (String) snapshot.getValue();
                             System.out.println("UID acquired is: " + uid);
-                            Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
+                            Firebase newRef = new Firebase(databaseLink).child(users).child(uid);
                             newRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     long numLoginAttempts = (Long) dataSnapshot.child("numLoginAttempts").getValue();
                                     numLoginAttempts++;
-                                    Firebase anotherRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
+                                    Firebase anotherRef = new Firebase(databaseLink).child(users).child(uid);
                                     anotherRef.child("numLoginAttempts").setValue(numLoginAttempts);
                                     if (numLoginAttempts > 3) {
                                         anotherRef.child("locked").setValue(true);
@@ -203,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
         return email.replace('.', '*');
     }
 
+    
     private String decrypt(String email) {
         return email.replace("*", ".");
     }

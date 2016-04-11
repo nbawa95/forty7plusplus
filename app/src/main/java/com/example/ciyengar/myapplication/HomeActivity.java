@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -44,24 +42,27 @@ public class HomeActivity extends AppCompatActivity {
 
     private Firebase myFirebaseRef;
     private ListView listView;
+    private String databaseLink = "https://moviespotlight.firebaseio.com/";
+    private String noMovies = "No movies for you";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
 
-        myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        myFirebaseRef = new Firebase(databaseLink);
         setContentView(R.layout.activity_home);
         Firebase.setAndroidContext(this);
-        Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        Firebase myFirebaseRef = new Firebase(databaseLink);
         firebaseRef = myFirebaseRef;
+        //anonymous inner class needs to be this long
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
                     final String id = (String) authData.getUid();
                     // user is logged in
-                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child((String) authData.getUid());
+                    Firebase userRef = new Firebase(databaseLink).child("users").child((String) authData.getUid());
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
@@ -76,13 +77,10 @@ public class HomeActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                             }
-
-
                             LoginActivity.currentUser = new User(id, name, major, isAdmin);
                             LoginActivity.currentUser.setBlocked(isBlocked);
                             LoginActivity.currentUser.setLocked(isLocked);
                         }
-
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
                             System.out.println("The read failed: " + firebaseError.getMessage());
@@ -120,11 +118,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (movieTitles.contains("No movies for you")) {
+                if (movieTitles.contains(noMovies)) {
                     return;
                 }
                 // ListView Clicked item index
-                int itemPosition     = position + 1;
+                //int itemPosition     = position + 1;
                 RateMovie.currentMovie = movieList.get(position);
                 // ListView Clicked item value
                 Intent i = new Intent(HomeActivity.this, RateMovie.class);
@@ -142,9 +140,9 @@ public class HomeActivity extends AppCompatActivity {
     public void populateRecommendations() {
         AuthData authData = myFirebaseRef.getAuth();
         if (authData != null) {
-            Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("ratings");
+            Firebase userRef = new Firebase(databaseLink).child("ratings");
             if (userRef == null) {
-                movieTitles.add("No movies for you");
+                movieTitles.add(noMovies);
                 refresh();
                 return;
             }
@@ -169,7 +167,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                     if (noMovies) {
-                        movieTitles.add("No movies for you");
+                        movieTitles.add(noMovies);
                         refresh();
                     } else {
                         callVolley(movieIds);
@@ -202,10 +200,9 @@ public class HomeActivity extends AppCompatActivity {
         JsonObjectRequest jsonRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(JSONObject response) {
-                        // the response is already constructed as a JSONObject!
+                    public void onResponse(JSONObject response) {   // the response is already constructed as a JSONObject!
                         try {
-                            if(movieTitles.contains("No movies for you")) {
+                            if(movieTitles.contains(noMovies)) {
                                 movieTitles.clear();
                             }
                             String movieTitle = response.getString("Title");
@@ -244,14 +241,14 @@ public class HomeActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_xml, menu);
 
         final MenuItem item = menu.findItem(R.id.action_admin);
-        Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        Firebase newRef = new Firebase(databaseLink);
         newRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
                 if (authData != null) {
                     final String id = (String) authData.getUid();
                     // user is logged in
-                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(id);
+                    Firebase userRef = new Firebase(databaseLink).child("users").child(id);
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         boolean noMovies = true;
 

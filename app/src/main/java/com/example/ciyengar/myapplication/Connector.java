@@ -140,7 +140,7 @@ public class Connector {
      */
     public static boolean isMajor(String majorToCheck) {
         for (int i = 0; i < majors.length; i++) {
-            if majors[i].equals(majorToCheck) {
+            if (majors[i].equals(majorToCheck)) {
                 return true;
             }
         }

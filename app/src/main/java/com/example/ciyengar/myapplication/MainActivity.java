@@ -28,14 +28,28 @@ import com.firebase.client.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Firebase Reference
+     */
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
 
     // private static int RESULT_LOAD_IMAGE = 1;
 
+    /**
+     * String Array of majors
+     */
     private String[] majors;
-
+    /**
+     * name
+     */
     private EditText name;
+    /**
+     * username
+     */
     private TextView username;
+    /**
+     * major
+     */
     private NumberPicker major;
 
 

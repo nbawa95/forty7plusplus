@@ -38,11 +38,22 @@ import java.util.List;
  * All methods realated to searching
  */
 public class SearchActivity extends AppCompatActivity {
-
+    /**
+     * Array list of all the movies
+     */
     public static List<Movie> movies = new ArrayList<Movie>();
+    /**
+     * List of all the Titles
+     */
     public static List<String> movieTitles = new ArrayList<>();
+    /**
+     * Firebase Reference
+     */
     private static Firebase firebaseRef;
 
+    /**
+     * List view
+     */
     private ListView listView;
 
     @Override

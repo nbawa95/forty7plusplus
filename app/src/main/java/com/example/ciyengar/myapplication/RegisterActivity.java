@@ -23,11 +23,29 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     // UI references.
+    /**
+     * current user
+     */
     public static User currentUser;
+    /**
+     * User Viewing register username
+     */
     private AutoCompleteTextView registerUsernameView, registerNameView;
+    /**
+     * Register Password
+     */
     private EditText registerPasswordView;
+    /**
+     * Pick Major
+     */
     private NumberPicker majorPicker;
+    /**
+     * Register Button
+     */
     private Button registerButton;
+    /**
+     * the Majors
+     */
     private String[] majors;
 
     @Override

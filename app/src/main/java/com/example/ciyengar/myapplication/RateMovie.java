@@ -38,14 +38,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RateMovie extends AppCompatActivity {
-
+    /**
+     * current movie selected
+     */
     public static Movie currentMovie;
+    /**
+     * firebase reference
+     */
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+    /**
+     * movie information
+     */
     private static RequestQueue movieInfo;
+    /**
+     * rating information
+     */
     private Map<String, Double> ratingInfo;
+    /**
+     * All of the ratings
+     */
     private TextView yourRating, overallRating, majorRating;
+    /**
+     * Overall Ratings
+     */
     private String overallRatingString = "overallRating";
+    /**
+     * Major Rating
+     */
     private String majorRatingString = "majorRating";
+    /**
+     * Movie has not been rated
+     */
     private String notRatedString = "Not Rated";
 
     @Override

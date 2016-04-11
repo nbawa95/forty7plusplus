@@ -25,6 +25,9 @@ import java.util.Map;
  */
 public final class Connector {
 
+    /**
+     * Array of majors a user can pick
+     */
     private static String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
             "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
             "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
@@ -32,8 +35,14 @@ public final class Connector {
             "Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
             "Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
             "International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
+    /**
+     * array of curse words
+     */
     private static String[] curseWords = {"ass", "fuck", "bitch", "bastard", "cunt", "porn"};
 
+    /**
+     * Connector is not called
+     */
     private Connector() {
         //not called
     }
@@ -73,6 +82,12 @@ public final class Connector {
         return true;
     }
 
+
+    /**
+     * Whether or not the username is valid
+     * @param username username
+     * @return boolean
+     */
     public static boolean isUsernameValid(String username) {
         if (username == null) {
             throw new IllegalArgumentException("Username is null");
@@ -186,7 +201,7 @@ public final class Connector {
     /**
      * Will return true is the movietitle is valid false otherwise
      * @param movieTitle the title of the movie
-     * @return
+     * @return boolean
      */
     public static boolean isMovieTitleValid(String movieTitle) {
         if (movieTitle == null) {

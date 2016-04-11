@@ -4,10 +4,25 @@ package com.example.ciyengar.myapplication;
  * Created by Dhruv Sagar on 08-Mar-16.
  */
 public class User {
+    /**
+     * User ID
+     */
     private String id;
+    /**
+     * User's name
+     */
     private String name;
+    /**
+     * User's major
+     */
     private String major;
+    /**
+     * User's administrative access
+     */
     private Boolean admin;
+    /**
+     * User's account state
+     */
     private Boolean blocked, locked;
 
     /**

@@ -38,14 +38,35 @@ import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity {
 
+    /**
+     * Firebase
+     */
     private static Firebase firebaseRef;
+    /**
+     * List of movies
+     */
     private List<Movie> movieList = new ArrayList<>();
+    /**
+     * List of movie Titles
+     */
     private List<String> movieTitles = new ArrayList<>();
 
+    /**
+     * Firebase Ref
+     */
     private Firebase myFirebaseRef;
+    /**
+     * List View
+     */
     private ListView listView;
+    /**
+     * Database Link
+     */
     private String databaseLink = "https://moviespotlight.firebaseio.com/";
-    private String noMoviesMessage = "No movies for you";
+    /**
+     * String when there are no movies
+     */
+    private String noMoviesMessage = "No Recommended Movies";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

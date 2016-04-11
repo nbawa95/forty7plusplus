@@ -20,7 +20,13 @@ import java.util.List;
  * Created by Dhruv Sagar on 26-Mar-16.
  */
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
+    /**
+     * List of Users
+     */
     private List<User> userList = new ArrayList<User>();
+    /**
+     * Context
+     */
     private Context context;
 
 

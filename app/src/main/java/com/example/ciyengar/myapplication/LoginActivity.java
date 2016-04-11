@@ -30,12 +30,33 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     // UI references.
+    /**
+     * Email viewer
+     */
     private AutoCompleteTextView mEmailView;
+    /**
+     * Password viewer
+     */
     private EditText mPasswordView;
+    /**
+     * Current User display
+     */
     public static User currentUser;
+    /**
+     * Register Button
+     */
     private Button registerButton;
+    /**
+     * Email Sign-in Button
+     */
     private Button mEmailSignInButton;
+    /**
+     * Users
+     */
     private String users = "users";
+    /**
+     * Database Link
+     */
     private String databaseLink = "https://moviespotlight.firebaseio.com/";
 
     @Override

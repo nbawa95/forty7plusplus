@@ -5,10 +5,25 @@ package com.example.ciyengar.myapplication;
  * Created by ciyengar on 3/2/16.
  */
 public class Movie {
+    /**
+     * movie title
+     */
     private String movieTitle;
+    /**
+     * year
+     */
     private String year;
+    /**
+     * id
+     */
     private String id;
+    /**
+     * movie poster URL
+     */
     private String posterURL;
+    /**
+     * Movie Description
+     */
     private String movieDesc;
 
     /**

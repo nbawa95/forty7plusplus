@@ -142,6 +142,11 @@ public class SearchActivity extends AppCompatActivity {
     public JsonRequest searchMovie(String theMovieTitle) {
         // System.out.println(movieTitle);
         String movieTitle = "";
+        if (!Connector.isMovieTitleValid(theMovieTitle)) {
+            movieTitles.clear();
+            movieTitles.add("Incorrect search parameters!");
+            return null;
+        }
         try {
             movieTitle = URLEncoder.encode(theMovieTitle, "UTF-8");
         } catch (UnsupportedEncodingException cantencode) {

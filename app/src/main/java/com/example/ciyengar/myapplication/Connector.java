@@ -1,10 +1,22 @@
 package com.example.ciyengar.myapplication;
 
+import android.util.Log;
 import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +24,7 @@ import java.util.Map;
  * Created by Dhruv Sagar on 11-Apr-16.
  */
 public final class Connector {
+
     private static String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
             "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
             "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
@@ -19,6 +32,7 @@ public final class Connector {
             "Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
             "Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
             "International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
+    private static String[] curseWords = {"ass", "fuck", "bitch", "bastard", "cunt", "porn"};
 
     private Connector() {
         //not called
@@ -31,9 +45,9 @@ public final class Connector {
      * @param majorIndex index of major entered
      * @return returns the error string if there is an error, null otherwise
      */
-    public static CharSequence profileChangeSuccessful(EditText newPassword, String nameString, int majorIndex) {
+    public static CharSequence profileChangeSuccessful(String newPassword, String nameString, int majorIndex) {
         CharSequence error = null;
-        if (!isPasswordValid(newPassword.getText().toString())) {
+        if (!isPasswordValid(newPassword)) {
             error = "Password is not valid";
         } else if (nameString.length() < 2) {
             error = "Name is too short";
@@ -48,9 +62,25 @@ public final class Connector {
      * @param password user password
      * @return returns true if password is valid
      */
-    private static boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
+        if (password == null) {
+            throw new IllegalArgumentException("Password is null");
+        }
         int minPasswordLength = 5;
         if (password.length() < minPasswordLength) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isUsernameValid(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username is null");
+        }
+        int minUsernameLength = 5;
+        if (username.length() < minUsernameLength) {
+            return false;
+        } else if (!username.contains("@")) {
             return false;
         }
         return true;
@@ -142,6 +172,9 @@ public final class Connector {
      * @return boolean whether the major is valid
      */
     public static boolean isMajor(String majorToCheck) {
+        if (majorToCheck == null) {
+            throw new IllegalArgumentException("Major is null");
+        }
         for (int i = 0; i < majors.length; i++) {
             if (majors[i].equals(majorToCheck)) {
                 return true;
@@ -149,5 +182,26 @@ public final class Connector {
         }
         return false;
     }
+
+    /**
+     * Will return true is the movietitle is valid false otherwise
+     * @param movieTitle the title of the movie
+     * @return
+     */
+    public static boolean isMovieTitleValid(String movieTitle) {
+        if (movieTitle == null) {
+            throw new IllegalArgumentException("Movie Title is null");
+        }
+        for (String s: curseWords) {
+            if (movieTitle.contains(s)) {
+                return false;
+            }
+        }
+        if (movieTitle.length() < 4) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

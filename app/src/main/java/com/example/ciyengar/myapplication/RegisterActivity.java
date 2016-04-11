@@ -70,9 +70,14 @@ public class RegisterActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (!isPasswordValid(password)) {
+        if (!Connector.isPasswordValid(password)) {
             registerPasswordView.setError("Password either too short or conatins ':'");
             focusView = registerPasswordView;
+            cancel = true;
+        }
+        if (!Connector.isUsernameValid(username)) {
+            registerUsernameView.setError("Username not an email or too short");
+            focusView = registerUsernameView;
             cancel = true;
         }
 

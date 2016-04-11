@@ -182,7 +182,8 @@ public class MainActivity extends AppCompatActivity {
         String nameString = name.getText().toString();
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
         int majorIndex = major.getValue();
-        CharSequence text = Connector.profileChangeSuccessful(newPassword, nameString, majorIndex);
+        CharSequence text = Connector.profileChangeSuccessful(newPassword.getText().toString(), nameString, majorIndex);
+        //newPassword.setError(text);
         if (text != null) {
             Context context = getApplicationContext();
             Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);

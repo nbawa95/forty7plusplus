@@ -235,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
         String nameString = name.getText().toString();
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
         int majorIndex = major.getValue();
+        cancel = Connector.profileChangeSuccessful(newPassword, nameString, majorIndex);
         if (!isPasswordValid(newPassword.getText().toString())) {
             Context context = getApplicationContext();
             CharSequence text = "Password is not valid";

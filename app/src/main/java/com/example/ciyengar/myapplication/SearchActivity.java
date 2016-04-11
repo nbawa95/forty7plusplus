@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -147,7 +148,7 @@ public class SearchActivity extends AppCompatActivity {
         try {
             movieTitle = URLEncoder.encode(theMovieTitle, "UTF-8");
         } catch (UnsupportedEncodingException cantencode) {
-            cantencode.printStackTrace();
+            Log.e("SearchActivity", cantencode.getMessage());
         }
         movies.clear();
         movieTitles.clear();
@@ -167,25 +168,25 @@ public class SearchActivity extends AppCompatActivity {
                                     String year = singleMovieResult.getString("Year");
                                     String id = singleMovieResult.getString("imdbID");
                                     String posterURL = singleMovieResult.getString("Poster");
-                                    if (posterURL.equals("N/A")) {
+                                    if ("N/A".equals(posterURL)) {
                                         posterURL = "http://ia.media-imdb.com/images/M/MV5BMjExNzM0NDM0N15BMl5BanBnXkFtZTcwMzkxOTUwNw@@._V1_SX300.jpg";
                                     }
                                     movies.add(new Movie(title, year, id, posterURL));
                                     movieTitles.add(title);
 
                                 } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    Log.e("SearchActivity", e.getMessage());
                                 }
                             }
                             SearchActivity.this.refresh();
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("SearchActivity", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        Log.e("SearchActivity", error.getMessage());
                     }
                 });
         return jsonRequest;

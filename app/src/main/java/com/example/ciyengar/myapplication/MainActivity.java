@@ -256,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
+
+
 //    /**
 //     * load image
 //     * @param view view

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,8 +70,10 @@ public class RateMovie extends AppCompatActivity {
 
         //Setting bounds for the ratings.
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
-        ratingPicker.setMinValue(1);
-        ratingPicker.setMaxValue(5);
+        int minRatingPicker = 1;
+        int maxRatingPicker = 5;
+        ratingPicker.setMinValue(minRatingPicker);
+        ratingPicker.setMaxValue(maxRatingPicker);
 
         //Image stuff
         String url = currentMovie.getPosterURL();
@@ -286,13 +289,13 @@ public class RateMovie extends AppCompatActivity {
                             TextView movieDescField = (TextView) findViewById(R.id.movieDesc);
                             movieDescField.setText(response.getString("Plot"));
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("RateMovie", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        Log.e("RateMovie", error.getMessage());
                     }
                 });
         return jsonRequest;

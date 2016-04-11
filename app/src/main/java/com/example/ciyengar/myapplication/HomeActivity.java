@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -157,6 +158,18 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     ArrayList<String> movieIds = new ArrayList<String>();
                     for(DataSnapshot movie : snapshot.getChildren()) {
+<<<<<<< HEAD
+                        System.out.println(movie.getValue().toString());
+                        System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
+                        System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
+                        System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
+                        int minRecommendationRating = 4;
+                        if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
+                                !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
+                                && Double.parseDouble((String)
+                                        movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= minRecommendationRating) {
+                            System.out.println(movie.getKey() + ": movie key");
+=======
                         // System.out.println(movie.getValue().toString());
                         // System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
                         // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
@@ -166,6 +179,7 @@ public class HomeActivity extends AppCompatActivity {
                                 && Double.parseDouble((String)
                                         movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= 4) {
                             // System.out.println(movie.getKey() + ": movie key");
+>>>>>>> origin/master
                             movieIds.add(movie.getKey());
 
                             noMovies = false;
@@ -227,13 +241,13 @@ public class HomeActivity extends AppCompatActivity {
                             // System.out.println(movieTitles.toString());
                             refresh();
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("HomeActivity" ,e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        Log.e("HomeActivity", error.getMessage());
                     }
                 });
         return jsonRequest;

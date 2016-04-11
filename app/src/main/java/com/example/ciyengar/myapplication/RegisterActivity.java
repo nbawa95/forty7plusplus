@@ -138,28 +138,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
-     * Decrupts email
-     * @param email the email
-     * @return a decrypted string
-     */
-    private String decrypt(String email) {
-        return email.replace("*", ".");
-    }
-
-    private boolean isUsernameValid(String username) {
-        if (username.length() < 5) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * checks for valid password
      * @param password the password
      * @return boolean
      */
     private boolean isPasswordValid(String password) {
-        if (password.length() < 5) {
+        int minPasswordLength = 5;
+        if (password.length() < minPasswordLength) {
             return false;
         }
         return true;

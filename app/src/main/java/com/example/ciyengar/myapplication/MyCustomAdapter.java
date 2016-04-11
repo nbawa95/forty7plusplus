@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Dhruv Sagar on 26-Mar-16.

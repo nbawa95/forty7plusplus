@@ -1,5 +1,7 @@
 package com.example.ciyengar.myapplication;
 
+import android.widget.EditText;
+
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
@@ -9,6 +11,7 @@ import java.util.HashMap;
  * Created by Dhruv Sagar on 11-Apr-16.
  */
 public class Connector {
+<<<<<<< HEAD
     /**
      * Profile Changes Are Successful
      * @param newPassword the new passworld
@@ -16,7 +19,46 @@ public class Connector {
      * @param majorIndex the major
      */
     public static void profileChangeSuccessful(String newPassword, String nameString, int majorIndex) {
+=======
+>>>>>>> 65b409f53c2473c817e6fe4ea36fc55e17a38c89
 
+    private static String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
+            "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
+            "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
+            "Materials Science and Engineering", "Mechanical Engineering", "Nuclear and Radiological Engineering", "Applied Mathematics",
+            "Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
+            "Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
+            "International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
+
+    /**
+     * Checks if profile can be changed or not
+     * @param newPassword new password entered
+     * @param nameString name entered
+     * @param majorIndex index of major entered
+     * @return returns the error string if there is an error, null otherwise
+     */
+    public static CharSequence profileChangeSuccessful(EditText newPassword, String nameString, int majorIndex) {
+        CharSequence error = null;
+        if (!isPasswordValid(newPassword.getText().toString())) {
+            error = "Password is not valid";
+        } else if (nameString.length() < 2) {
+            error = "Name is too short";
+        } else if (majorIndex == 0) {
+            error = "Please pick a major";
+        }
+        return error;
+    }
+
+    /**
+     * checks password
+     * @param password user password
+     * @return returns true if password is valid
+     */
+    private static boolean isPasswordValid(String password) {
+        if (password.length() < 5 || password.contains(":")) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -69,4 +111,46 @@ public class Connector {
         }
         return true;
     }
+
+    /**
+     * updates the major and name of the profile upon clicking submit changes
+     * @param nameText name entered
+     * @param majorText major entered
+     */
+    public static void updateProfile(String nameText, String majorText) {
+        Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
+        String myUID = "";
+        AuthData authData = myFirebaseRef.getAuth();
+        if (authData != null) {
+            myUID = (String) authData.getUid();
+        }
+        // Update password on DB
+
+        Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child(myUID);
+        newUserRef.child("name").setValue(nameText);
+        newUserRef.child("major").setValue(majorText);
+    }
+
+    /**
+     * Will return a list of valid majors
+     * @return array of strings of valid majors
+     */
+    public static String[] getMajors() {
+        return majors;
+    }
+
+    /**
+     * Will return true if the major passed in is valid
+     * @param majorToCheck the major to validate
+     * @return boolean whether the major is valid
+     */
+    public static boolean isMajor(String majorToCheck) {
+        for (int i = 0; i < majors.length; i++) {
+            if (majors[i].equals(majorToCheck)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

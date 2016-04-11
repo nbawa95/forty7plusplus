@@ -120,8 +120,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (movieTitles.contains("No movies for you"))
+                if (movieTitles.contains("No movies for you")) {
                     return;
+                }
                 // ListView Clicked item index
                 int itemPosition     = position + 1;
                 RateMovie.currentMovie = movieList.get(position);
@@ -173,7 +174,9 @@ public class HomeActivity extends AppCompatActivity {
                     if (noMovies) {
                         movieTitles.add("No movies for you");
                         refresh();
-                    } else callVolley(movieIds);
+                    } else {
+                        callVolley(movieIds);
+                    }
                     System.out.println(movieTitles.toString());
                 }
                 @Override

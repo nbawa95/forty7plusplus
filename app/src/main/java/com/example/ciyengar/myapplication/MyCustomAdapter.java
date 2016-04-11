@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dhruv Sagar on 26-Mar-16.
  */
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
-    private ArrayList<User> userList = new ArrayList<User>();
+    private List<User> userList = new ArrayList<User>();
     private Context context;
 
 
@@ -28,7 +29,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
      * @param users the users
      * @param context the context
      */
-    public MyCustomAdapter(ArrayList<User> users, Context context) {
+    public MyCustomAdapter(List<User> users, Context context) {
         userList = users;
         this.context = context;
     }

@@ -6,6 +6,7 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Dhruv Sagar on 11-Apr-16.
@@ -63,7 +64,7 @@ public final class Connector {
      * @param rating the user's rating, must be between 1 and 5 stars
      * @return if the rating was successfully added
      */
-    public static boolean addMovieRating(Movie currentMovie, HashMap<String, Double> ratingInfo, int rating) {
+    public static boolean addMovieRating(Movie currentMovie, Map<String, Double> ratingInfo, int rating) {
         int maxRating = 5;
         int minRating = 1;
         if (currentMovie == null || rating > maxRating || rating < minRating) {

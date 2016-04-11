@@ -32,14 +32,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
 public class HomeActivity extends AppCompatActivity {
 
     private static Firebase firebaseRef;
-    private ArrayList<Movie> movieList = new ArrayList<>();
-    private ArrayList<String> movieTitles = new ArrayList<>();
+    private List<Movie> movieList = new ArrayList<>();
+    private List<String> movieTitles = new ArrayList<>();
 
     private Firebase myFirebaseRef;
     private ListView listView;
@@ -192,7 +193,7 @@ public class HomeActivity extends AppCompatActivity {
      * Calls a Volley
      * @param movieIds The ID of the movie
      */
-    public void callVolley(ArrayList<String> movieIds) {
+    public void callVolley(List<String> movieIds) {
         for (String movieId : movieIds) {
             Volley.newRequestQueue(this).add(moreMovieInfo(movieId));
         }

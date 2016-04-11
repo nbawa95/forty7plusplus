@@ -18,16 +18,17 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Admin extends AppCompatActivity {
     /**
      *
      */
-    public static ArrayList<User> users = new ArrayList<>();
+    public static List<User> users = new ArrayList<>();
     /**
      *
      */
-    public static ArrayList<String> userNames = new ArrayList<>();
+    public static List<String> userNames = new ArrayList<>();
     /**
      *
      */

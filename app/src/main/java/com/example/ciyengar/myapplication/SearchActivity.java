@@ -32,14 +32,15 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * All methods realated to searching
  */
 public class SearchActivity extends AppCompatActivity {
 
-    public static ArrayList<Movie> movies = new ArrayList<Movie>();
-    public static ArrayList<String> movieTitles = new ArrayList<>();
+    public static List<Movie> movies = new ArrayList<Movie>();
+    public static List<String> movieTitles = new ArrayList<>();
     private static Firebase firebaseRef;
 
     private ListView listView;
@@ -53,9 +54,7 @@ public class SearchActivity extends AppCompatActivity {
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
-                if (authData != null) {
-                    // user is logged in
-                } else {
+                if (authData == null)  {
                     // user is not logged in
                     Intent intent = new Intent(SearchActivity.this, LoginActivity.class);
                     startActivity(intent);
@@ -89,10 +88,8 @@ public class SearchActivity extends AppCompatActivity {
                                     int position, long id) {
 
                 // ListView Clicked item index
-                int itemPosition     = position + 1;
                 RateMovie.currentMovie = movies.get(position);
                 // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
                 //finish();
                 Intent i = new Intent(SearchActivity.this, RateMovie.class);
                 startActivity(i);

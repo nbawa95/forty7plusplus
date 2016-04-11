@@ -176,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view button
      */
     public void submitChanges(View view) {
-        EditText oldPassword = (EditText) findViewById(R.id.oldPassword);
         EditText newPassword = (EditText) findViewById(R.id.newPassword);
         boolean cancel = false;
         EditText name = (EditText) findViewById(R.id.name);

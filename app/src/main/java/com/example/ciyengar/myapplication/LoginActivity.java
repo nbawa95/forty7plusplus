@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     public static User currentUser;
-    private View mLoginFormView;
     private Button registerButton;
     private Button mEmailSignInButton;
     private String users = "users";
@@ -72,7 +70,6 @@ public class LoginActivity extends AppCompatActivity {
                 goToRegister();
             }
         });
-        mLoginFormView = findViewById(R.id.login_form);
     }
 
     /**
@@ -99,24 +96,6 @@ public class LoginActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        boolean flag = true;
 
         ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override

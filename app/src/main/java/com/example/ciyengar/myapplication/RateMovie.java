@@ -35,13 +35,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class RateMovie extends AppCompatActivity {
 
     public static Movie currentMovie;
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
     private static RequestQueue movieInfo;
-    private HashMap<String, Double> ratingInfo;
+    private Map<String, Double> ratingInfo;
     private TextView yourRating, overallRating, majorRating;
     private String overallRatingString = "overallRating";
     private String majorRatingString = "majorRating";
@@ -267,8 +268,6 @@ public class RateMovie extends AppCompatActivity {
         int rating = ratingPicker.getValue();
         if (Connector.addMovieRating(currentMovie, ratingInfo, rating)) {
             finish();
-        } else {
-            // System.out.println("there was an error");
         }
     }
 

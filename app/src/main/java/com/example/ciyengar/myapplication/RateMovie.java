@@ -231,44 +231,7 @@ public class RateMovie extends AppCompatActivity {
     public void submitRating(View view) {
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
         int rating = ratingPicker.getValue();
-        AuthData authData = myFirebaseRef.getAuth();
-        if (authData != null) {
-            System.out.println("--------" + "hello" + "------");
-            HashMap<String, String> map = new HashMap<>();
-            map.put("rating", String.valueOf(rating));
-            myFirebaseRef.child("ratings").child(currentMovie.getID()).child("review").child(authData.getUid()).setValue(map);
-            Firebase ratingsRef = myFirebaseRef.child("ratings").child(currentMovie.getID());
-
-            if (ratingInfo == null) {
-                System.out.println("RATINGINFO IS NULL DUDE");
-                ratingsRef.child("overallRating").setValue(String.valueOf(rating));
-                ratingsRef.child(LoginActivity.currentUser.getMajor()).setValue(String.valueOf(rating));
-                ratingsRef.child("NumtotalRatings").setValue(String.valueOf(1));
-                ratingsRef.child("Num" + LoginActivity.currentUser.getMajor()).setValue(String.valueOf(1));
-            } else {
-                double oRating = ratingInfo.get("overallRating");
-                double totalRated = ratingInfo.get("#totalRatings");
-                double majorRating = ratingInfo.get("majorRating") == null? 0 : ratingInfo.get("majorRating");
-                double totalMajorRated = ratingInfo.get("#majorRating");
-                System.out.println(majorRating + " :Major rating before submit");
-                System.out.println(ratingInfo.get("yourRating") + " :Your previous rating");
-                System.out.println(rating + " :your new rating");
-                if (ratingInfo.get("yourRating") != null) {
-                    oRating = (oRating*totalRated  - ratingInfo.get("yourRating") + rating) / (totalRated);
-                    majorRating = (majorRating*totalMajorRated - ratingInfo.get("yourRating") + rating) / (totalMajorRated);
-                } else {
-                    oRating = (oRating * totalRated + rating) / (++totalRated);
-                    majorRating = ((majorRating * totalMajorRated) + rating )/ (++totalMajorRated);
-                }
-
-                ratingsRef.child("overallRating").setValue(String.valueOf(oRating));
-                ratingsRef.child(LoginActivity.currentUser.getMajor()).setValue(String.valueOf(majorRating));
-                ratingsRef.child("NumtotalRatings").setValue(String.valueOf(totalRated));
-                ratingsRef.child("Num" + LoginActivity.currentUser.getMajor()).setValue(String.valueOf(totalMajorRated));
-            }
-        }
-        Intent i = new Intent(RateMovie.this, HomeActivity.class);
-        startActivity(i);
+        Connector.addMovieRating(currentMovie, ratingInfo, rating);
         finish();
     }
 

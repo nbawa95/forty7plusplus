@@ -4,17 +4,11 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.os.Bundle;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import android.support.design.widget.FloatingActionButton;
-import java.util.ArrayList;
 import java.util.Map;
 
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,45 +16,20 @@ import android.widget.Button;
 import android.content.Context;
 import android.database.Cursor;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.graphics.BitmapFactory;
-import android.widget.NumberPicker;
-import android.graphics.Bitmap;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,42 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
 
-    private String[] majors = {"PICK A MAJOR",
-            "Architecture",
-            "Industrial Design",
-            "Computational Media",
-            "Computer Science",
-            "Aerospace Engineering",
-            "Biomedical Engineering",
-            "Chemical and Biomolecular Engineering",
-            "Civil Engineering",
-            "Computer Engineering",
-            "Electrical Engineering",
-            "Environmental Engineering",
-            "Industrial Engineering",
-            "Materials Science and Engineering",
-            "Mechanical Engineering",
-            "Nuclear and Radiological Engineering",
-            "Applied Mathematics",
-            "Applied Physics",
-            "Biochemistry",
-            "Biology",
-            "Chemistry",
-            "Discrete Mathematics",
-            "Earth and Atmospheric Sciences",
-            "Physics",
-            "Psychology",
-            "Applied Languages and Intercultural Studies",
-            "Computational Media",
-            "Economics",
-            "Economics and International Affairs",
-            "Global Economics and Modern Languages",
-            "History, Technology, and Society",
-            "International Affairs",
-            "International Affairs and Modern Language",
-            "Literature, Media, and Communication",
-            "Public Policy",
-            "Business Administration"};
+    private String[] majors;
 
     private EditText name;
     private TextView username;
@@ -115,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
+        majors = Connector.getMajors();
         name = (EditText) findViewById(R.id.name);
         username = (TextView) findViewById(R.id.username);
         EditText oldPassword = (EditText) findViewById(R.id.oldPassword);

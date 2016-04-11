@@ -69,42 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static int RESULT_LOAD_IMAGE = 1;
 
-    private String[] majors = {"PICK A MAJOR",
-            "Architecture",
-            "Industrial Design",
-            "Computational Media",
-            "Computer Science",
-            "Aerospace Engineering",
-            "Biomedical Engineering",
-            "Chemical and Biomolecular Engineering",
-            "Civil Engineering",
-            "Computer Engineering",
-            "Electrical Engineering",
-            "Environmental Engineering",
-            "Industrial Engineering",
-            "Materials Science and Engineering",
-            "Mechanical Engineering",
-            "Nuclear and Radiological Engineering",
-            "Applied Mathematics",
-            "Applied Physics",
-            "Biochemistry",
-            "Biology",
-            "Chemistry",
-            "Discrete Mathematics",
-            "Earth and Atmospheric Sciences",
-            "Physics",
-            "Psychology",
-            "Applied Languages and Intercultural Studies",
-            "Computational Media",
-            "Economics",
-            "Economics and International Affairs",
-            "Global Economics and Modern Languages",
-            "History, Technology, and Society",
-            "International Affairs",
-            "International Affairs and Modern Language",
-            "Literature, Media, and Communication",
-            "Public Policy",
-            "Business Administration"};
+    private String[] majors;
 
     private EditText name;
     private TextView username;
@@ -116,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_main);
+        majors = Connector.getMajors();
         name = (EditText) findViewById(R.id.name);
         username = (TextView) findViewById(R.id.username);
         EditText oldPassword = (EditText) findViewById(R.id.oldPassword);

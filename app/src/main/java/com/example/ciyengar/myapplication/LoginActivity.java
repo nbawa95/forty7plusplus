@@ -50,14 +50,6 @@ import java.lang.Math;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    private String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
-"Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
-"Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
-"Materials Science and Engineering", "Mechanical Engineering", "Nuclear and Radiological Engineering", "Applied Mathematics",
-"Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
-"Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
-"International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;

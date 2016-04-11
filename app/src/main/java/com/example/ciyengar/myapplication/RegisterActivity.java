@@ -50,26 +50,21 @@ import java.lang.Math;
  */
 public class RegisterActivity extends AppCompatActivity {
 
-    private String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
-            "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
-            "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
-            "Materials Science and Engineering", "Mechanical Engineering", "Nuclear and Radiological Engineering", "Applied Mathematics",
-            "Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
-            "Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
-            "International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
-
     // UI references.
     public static User currentUser;
     private AutoCompleteTextView registerUsernameView, registerNameView;
     private EditText registerPasswordView;
     private NumberPicker majorPicker;
     private Button registerButton;
+    private String[] majors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
         setContentView(R.layout.activity_register);
+
+        majors = Connector.getMajors();
 
         registerUsernameView = (AutoCompleteTextView) findViewById(R.id.register_email);
         registerNameView = (AutoCompleteTextView) findViewById(R.id.name);
@@ -103,12 +98,6 @@ public class RegisterActivity extends AppCompatActivity {
         if (!isPasswordValid(password)) {
             registerPasswordView.setError("Password either too short or conatins ':'");
             focusView = registerPasswordView;
-            cancel = true;
-        }
-
-        if (!isUsernameValid(username)) {
-            registerUsernameView.setError("username taken or too short");
-            focusView = registerUsernameView;
             cancel = true;
         }
 
@@ -170,13 +159,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String decrypt(String email) {
         return email.replace("*", ".");
-    }
-
-
-    private boolean isUsernameValid(String username) {
-        if (username.length() < 5)
-            return false;
-        return true;
     }
 
     private boolean isPasswordValid(String password) {

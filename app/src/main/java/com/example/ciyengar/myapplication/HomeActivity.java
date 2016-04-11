@@ -120,8 +120,9 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (movieTitles.contains("No movies for you"))
+                if (movieTitles.contains("No movies for you")) {
                     return;
+                }
                 // ListView Clicked item index
                 int itemPosition     = position + 1;
                 RateMovie.currentMovie = movieList.get(position);
@@ -170,7 +171,9 @@ public class HomeActivity extends AppCompatActivity {
                     if (noMovies) {
                         movieTitles.add("No movies for you");
                         refresh();
-                    } else callVolley(movieIds);
+                    } else {
+                        callVolley(movieIds);
+                    }
                     System.out.println(movieTitles.toString());
                 }
                 @Override
@@ -202,8 +205,9 @@ public class HomeActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         // the response is already constructed as a JSONObject!
                         try {
-                            if(movieTitles.contains("No movies for you"))
+                            if(movieTitles.contains("No movies for you")) {
                                 movieTitles.clear();
+                            }
                             String movieTitle = response.getString("Title");
                             String movieYear = response.getString("Year");
                             String posterURL = response.getString("Poster");

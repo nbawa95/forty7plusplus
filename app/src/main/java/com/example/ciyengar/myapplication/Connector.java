@@ -1,12 +1,7 @@
 package com.example.ciyengar.myapplication;
 
-import android.content.Context;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
@@ -50,8 +45,9 @@ public class Connector {
      * @return returns true if password is valid
      */
     private static boolean isPasswordValid(String password) {
-        if (password.length() < 5 || password.contains(":"))
+        if (password.length() < 5 || password.contains(":")) {
             return false;
+        }
         return true;
     }
 

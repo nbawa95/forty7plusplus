@@ -210,7 +210,7 @@ public class HomeActivity extends AppCompatActivity {
         String url = "http://www.omdbapi.com/?i=" + movieID + "&plot=full&r=json";
         // System.out.println("GOT TO THE METHOD!!!!");
         JsonObjectRequest jsonRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {   // the response is already constructed as a JSONObject!
                         try {

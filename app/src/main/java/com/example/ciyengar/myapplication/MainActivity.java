@@ -6,24 +6,19 @@ import android.os.Bundle;
 
 import java.util.Map;
 
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.content.Context;
-import android.database.Cursor;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.graphics.BitmapFactory;
 import com.firebase.client.AuthData;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;

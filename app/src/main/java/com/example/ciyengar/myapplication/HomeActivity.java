@@ -216,8 +216,9 @@ public class HomeActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         // the response is already constructed as a JSONObject!
                         try {
-                            if(movieTitles.contains("No movies for you"))
+                            if(movieTitles.contains("No movies for you")) {
                                 movieTitles.clear();
+                            }
                             String movieTitle = response.getString("Title");
                             String movieYear = response.getString("Year");
                             String posterURL = response.getString("Poster");

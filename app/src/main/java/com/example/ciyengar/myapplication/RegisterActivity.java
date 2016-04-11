@@ -146,6 +146,12 @@ public class RegisterActivity extends AppCompatActivity {
         return email.replace("*", ".");
     }
 
+    private boolean isUsernameValid(String username) {
+        if (username.length() < 5) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * checks for valid password
@@ -153,8 +159,9 @@ public class RegisterActivity extends AppCompatActivity {
      * @return boolean
      */
     private boolean isPasswordValid(String password) {
-        if (password.length() < 5)
+        if (password.length() < 5) {
             return false;
+        }
         return true;
     }
 

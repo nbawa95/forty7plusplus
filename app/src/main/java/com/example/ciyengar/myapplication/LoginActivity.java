@@ -130,8 +130,9 @@ public class LoginActivity extends AppCompatActivity {
                         Boolean isAdmin = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("admin");
                         Boolean isBlocked = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("blocked");
                         Boolean isLocked = (Boolean) ((Map<String, Boolean>) snapshot.getValue()).get("locked");
-                        if (isAdmin == null)
+                        if (isAdmin == null) {
                             isAdmin = false;
+                        }
                         currentUser = new User((String) authData.getUid(), name, major, isAdmin);
                         System.out.println(isBlocked);
                         if (isBlocked || isLocked) {

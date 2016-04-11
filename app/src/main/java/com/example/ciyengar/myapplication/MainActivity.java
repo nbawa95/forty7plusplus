@@ -30,6 +30,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");

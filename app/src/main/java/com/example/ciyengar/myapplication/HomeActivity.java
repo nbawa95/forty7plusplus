@@ -54,8 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         myFirebaseRef = new Firebase(databaseLink);
         setContentView(R.layout.activity_home);
         Firebase.setAndroidContext(this);
-        Firebase myFirebaseRef = new Firebase(databaseLink);
-        firebaseRef = myFirebaseRef;
         //anonymous inner class needs to be this long
         Firebase myFirebaseRef = new Firebase(databaseLink);
         firebaseRef = new Firebase(databaseLink);
@@ -157,36 +155,23 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     ArrayList<String> movieIds = new ArrayList<String>();
+                    // System.out.println(movie.getValue().toString());
+                    // System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
+                    // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
+                    // System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
                     for(DataSnapshot movie : snapshot.getChildren()) {
-<<<<<<< HEAD
-                        System.out.println(movie.getValue().toString());
-                        System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
-                        System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
-                        System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
                         int minRecommendationRating = 4;
                         if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
                                 !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
                                 && Double.parseDouble((String)
                                         movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= minRecommendationRating) {
-                            System.out.println(movie.getKey() + ": movie key");
-=======
-                        // System.out.println(movie.getValue().toString());
-                        // System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
-                        // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
-                        // System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
-                        if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
-                                !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
-                                && Double.parseDouble((String)
-                                        movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= 4) {
                             // System.out.println(movie.getKey() + ": movie key");
->>>>>>> origin/master
                             movieIds.add(movie.getKey());
-
                             noMovies = false;
                         }
                     }
                     if (noMovies) {
-                        movieTitles.add(noMovies);
+                        movieTitles.add("No movies for you");
                         refresh();
                     } else {
                         callVolley(movieIds);
@@ -241,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
                             // System.out.println(movieTitles.toString());
                             refresh();
                         } catch (JSONException e) {
-                            Log.e("HomeActivity" ,e.getMessage());
+                            Log.e("HomeActivity", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {

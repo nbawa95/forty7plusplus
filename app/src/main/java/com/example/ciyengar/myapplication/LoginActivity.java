@@ -212,6 +212,6 @@ public class LoginActivity extends AppCompatActivity {
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
-    
+
 }
 

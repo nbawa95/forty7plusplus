@@ -45,6 +45,7 @@ public class RateMovie extends AppCompatActivity {
     private TextView yourRating, overallRating, majorRating;
     private String overallRatingString = "overallRating";
     private String majorRatingString = "majorRating";
+    private String notRatedString = "Not Rated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +170,7 @@ public class RateMovie extends AppCompatActivity {
         if (authData != null) {
             Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("ratings");
             if (userRef == null) {
-                overallRating.setText("Not Rated");
+                overallRating.setText(notRatedString);
                 yourRating.setVisibility(View.GONE);
                 majorRating.setVisibility(View.GONE);
                 ratingInfo = null;
@@ -179,7 +180,7 @@ public class RateMovie extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     if (!snapshot.child(currentMovie.getID()).exists()) {
-                        overallRating.setText("Not Rated");
+                        overallRating.setText(notRatedString);
                         yourRating.setVisibility(View.GONE);
                         majorRating.setVisibility(View.GONE);
                         ratingInfo = null;
@@ -190,7 +191,7 @@ public class RateMovie extends AppCompatActivity {
                     try {
                         ratingInfo.put(overallRatingString, Double.parseDouble((String) ratingData.child(overallRatingString).getValue()));
                         // System.out.println(ratingInfo.toString());
-                        ratingInfo.put("overallRating", Double.parseDouble((String) ratingData.child("overallRating").getValue()));
+                        ratingInfo.put(overallRatingString, Double.parseDouble((String) ratingData.child(overallRatingString).getValue()));
                         // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put(overallRatingString, null);
@@ -204,7 +205,7 @@ public class RateMovie extends AppCompatActivity {
                     try {
                         ratingInfo.put(majorRatingString, Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
                         // System.out.println(ratingInfo.toString());
-                        ratingInfo.put("majorRating", Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
+                        ratingInfo.put(majorRatingString, Double.parseDouble((String) ratingData.child(LoginActivity.currentUser.getMajor()).getValue()));
                         // System.out.println(ratingInfo.toString());
                     } catch (NumberFormatException e) {
                         ratingInfo.put(majorRatingString, null);
@@ -227,7 +228,7 @@ public class RateMovie extends AppCompatActivity {
                         yourRating.setVisibility(View.VISIBLE);
                     }
                     if (ratingInfo != null) {
-                        overallRating.setText(ratingInfo.get(overallRatingString) == null ? "Not Rated" : "Overall rating: " + ratingInfo.get(overallRatingString));
+                        overallRating.setText(ratingInfo.get(overallRatingString) == null ? notRatedString : "Overall rating: " + ratingInfo.get(overallRatingString));
                         overallRating.setVisibility(View.VISIBLE);
                         // System.out.println("This is happening");
                         if (ratingInfo.get(majorRatingString) == null) {
@@ -235,14 +236,14 @@ public class RateMovie extends AppCompatActivity {
                         } else {
                             // System.out.println("This is also happening");
                             majorRating.setText("Major rating: " + ratingInfo.get(majorRatingString));
-                            overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + ratingInfo.get("overallRating"));
+                            overallRating.setText(ratingInfo.get(overallRatingString) == null ? notRatedString : "Overall rating: " + ratingInfo.get(overallRatingString));
                             overallRating.setVisibility(View.VISIBLE);
                             // System.out.println("This is happening");
-                            if (ratingInfo.get("majorRating") == null) {
+                            if (ratingInfo.get(majorRatingString) == null) {
                                 majorRating.setVisibility(View.GONE);
                             } else {
                                 // System.out.println("This is also happening");
-                                majorRating.setText("Major rating: " + ratingInfo.get("majorRating"));
+                                majorRating.setText("Major rating: " + ratingInfo.get(majorRatingString));
                                 majorRating.setVisibility(View.VISIBLE);
                             }
                         }

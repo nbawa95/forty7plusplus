@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Created by Dhruv Sagar on 11-Apr-16.
  */
-public class Connector {
+public final class Connector {
     private static String[] majors = {"PICK A MAJOR", "Architecture", "Industrial Design", "Computational Media", "Computer Science",
             "Aerospace Engineering", "Biomedical Engineering", "Chemical and Biomolecular Engineering", "Civil Engineering",
             "Computer Engineering", "Electrical Engineering", "Environmental Engineering", "Industrial Engineering",
@@ -18,6 +18,10 @@ public class Connector {
             "Applied Physics", "Biochemistry", "Biology", "Chemistry", "Discrete Mathematics", "Earth and Atmospheric Sciences", "Physics", "Psychology", "Applied Languages and Intercultural Studies", "Computational Media",
             "Economics", "Economics and International Affairs", "Global Economics and Modern Languages", "History, Technology, and Society", "International Affairs",
             "International Affairs and Modern Language", "Literature, Media, and Communication", "Public Policy", "Business Administration"};
+
+    private Connector() {
+        //not called
+    }
 
     /**
      * Checks if profile can be changed or not

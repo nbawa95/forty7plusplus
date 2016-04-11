@@ -38,7 +38,7 @@ public class Admin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        System.out.println(LoginActivity.currentUser + " Current user");
+        // System.out.println(LoginActivity.currentUser + " Current user");
 
         users.clear();
         //instantiate custom adapter
@@ -58,7 +58,7 @@ public class Admin extends AppCompatActivity {
                                     int position, long id) {
                 // ListView Clicked item index
                 int itemPosition = position;
-                System.out.println(users.get(itemPosition).getId());
+                // System.out.println(users.get(itemPosition).getId());
                 Firebase usersRef = new Firebase("https://moviespotlight.firebaseio.com/users/");
                 Boolean currentlyBlocked = users.get(itemPosition).isBlocked();
                 usersRef.child(users.get(itemPosition).getId()).child("blocked").setValue(!currentlyBlocked);
@@ -70,7 +70,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 for (DataSnapshot child : snapshot.getChildren()) {
-                    System.out.println(child.child("name").getValue());
+                    // System.out.println(child.child("name").getValue());
                     User userA = new User((String) child.getKey(), (String) child.child("name").getValue(),
                             (String) child.child("major").getValue(), (Boolean) child.child("admin").getValue());
                     userA.setLocked((Boolean) child.child("locked").getValue());

@@ -12,7 +12,7 @@ import com.android.volley.toolbox.Volley;
 /**
  * Created by ciyengar on 3/2/16.
  */
-public class MySingleton {
+public final class MySingleton {
     private static MySingleton mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;

@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
             ref.createUser(username, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
-                    System.out.println("Successfully created user account with uid: " + result.get("uid"));
+                    // System.out.println("Successfully created user account with uid: " + result.get("uid"));
                     Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com");
 
                     userRef.child("contact").child(encrypt(registerUsernameView.getText().toString())).setValue(result.get("uid"));
@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onError(FirebaseError firebaseError) {
-                    System.out.println("ERROR: " + firebaseError.getMessage());
+                    // System.out.println("ERROR: " + firebaseError.getMessage());
                     Context context = getApplicationContext();
                     CharSequence text = "ERROR: " + firebaseError.getMessage();
                     int duration = Toast.LENGTH_SHORT;

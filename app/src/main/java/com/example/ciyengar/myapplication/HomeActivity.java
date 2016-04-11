@@ -54,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Firebase.setAndroidContext(this);
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
-        firebaseRef = myFirebaseRef;
+        firebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         myFirebaseRef.addAuthStateListener(new Firebase.AuthStateListener() {
             @Override
             public void onAuthStateChanged(AuthData authData) {
@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+                            // System.out.println("The read failed: " + firebaseError.getMessage());
                         }
                     });
                 } else {
@@ -135,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         populateRecommendations();
-        System.out.println(movieTitles.toString() + " :Before final refresh");
+        // System.out.println(movieTitles.toString() + " :Before final refresh");
         refresh();
     }
 
@@ -157,15 +157,15 @@ public class HomeActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot snapshot) {
                     ArrayList<String> movieIds = new ArrayList<String>();
                     for(DataSnapshot movie : snapshot.getChildren()) {
-                        System.out.println(movie.getValue().toString());
-                        System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
-                        System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
-                        System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
+                        // System.out.println(movie.getValue().toString());
+                        // System.out.println(LoginActivity.currentUser.getMajor() + " :majorOFUSER");
+                        // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
+                        // System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
                         if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
                                 !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
                                 && Double.parseDouble((String)
                                         movie.child(LoginActivity.currentUser.getMajor()).getValue()) >= 4) {
-                            System.out.println(movie.getKey() + ": movie key");
+                            // System.out.println(movie.getKey() + ": movie key");
                             movieIds.add(movie.getKey());
 
                             noMovies = false;
@@ -177,11 +177,11 @@ public class HomeActivity extends AppCompatActivity {
                     } else {
                         callVolley(movieIds);
                     }
-                    System.out.println(movieTitles.toString());
+                    // System.out.println(movieTitles.toString());
                 }
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    System.out.println("The read failed: " + firebaseError.getMessage());
+                    // System.out.println("The read failed: " + firebaseError.getMessage());
                 }
             });
             refresh();
@@ -197,8 +197,8 @@ public class HomeActivity extends AppCompatActivity {
         for (String movieId : movieIds) {
             Volley.newRequestQueue(this).add(moreMovieInfo(movieId));
         }
-        System.out.println("Refresh in callVolley() happening");
-        System.out.println(movieTitles.toString() + " :movie titles");
+        // System.out.println("Refresh in callVolley() happening");
+        // System.out.println(movieTitles.toString() + " :movie titles");
         refresh();
     }
 
@@ -209,7 +209,7 @@ public class HomeActivity extends AppCompatActivity {
      */
     public JsonRequest moreMovieInfo(final String movieID) {
         String url = "http://www.omdbapi.com/?i=" + movieID + "&plot=full&r=json";
-        System.out.println("GOT TO THE METHOD!!!!");
+        // System.out.println("GOT TO THE METHOD!!!!");
         JsonObjectRequest jsonRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
@@ -222,10 +222,10 @@ public class HomeActivity extends AppCompatActivity {
                             String movieTitle = response.getString("Title");
                             String movieYear = response.getString("Year");
                             String posterURL = response.getString("Poster");
-                            System.out.println("Title: " + movieTitle);
+                            // System.out.println("Title: " + movieTitle);
                             movieList.add(new Movie(movieTitle, movieYear, movieID, posterURL));
                             movieTitles.add(movieTitle);
-                            System.out.println(movieTitles.toString());
+                            // System.out.println(movieTitles.toString());
                             refresh();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -281,7 +281,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+                            // System.out.println("The read failed: " + firebaseError.getMessage());
                         }
 
                     });

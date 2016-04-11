@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
 
-    private static int RESULT_LOAD_IMAGE = 1;
+    // private static int RESULT_LOAD_IMAGE = 1;
 
     private String[] majors;
 
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
-                    System.out.println("The read failed: " + firebaseError.getMessage());
+                    // System.out.println("The read failed: " + firebaseError.getMessage());
                 }
             });
 
@@ -258,40 +258,40 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    /**
-     * load image
-     * @param view view
-     */
-    public void loadImage(View view) {
-        Intent i = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-        startActivityForResult(i, RESULT_LOAD_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-
-            ImageView imageView = (ImageView) findViewById(R.id.proPic);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            imageView.setRotation(90);
-
-        }
-    }
+//    /**
+//     * load image
+//     * @param view view
+//     */
+//    public void loadImage(View view) {
+//        Intent i = new Intent(
+//                Intent.ACTION_PICK,
+//                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//
+//        startActivityForResult(i, RESULT_LOAD_IMAGE);
+//    }
+//
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+//            Uri selectedImage = data.getData();
+//            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//
+//            Cursor cursor = getContentResolver().query(selectedImage,
+//                    filePathColumn, null, null, null);
+//            cursor.moveToFirst();
+//
+//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            String picturePath = cursor.getString(columnIndex);
+//            cursor.close();
+//
+//            ImageView imageView = (ImageView) findViewById(R.id.proPic);
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+//            imageView.setRotation(90);
+//
+//        }
+//    }
 
 
 

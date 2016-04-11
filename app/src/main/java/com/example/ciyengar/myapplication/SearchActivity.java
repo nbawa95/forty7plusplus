@@ -138,13 +138,14 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Request movies according to title
-     * @param movieTitle the movie Title
+     * @param theMovieTitle the movie Title
      * @return JsonRequest
      */
-    public JsonRequest searchMovie(String movieTitle) {
-        System.out.println(movieTitle);
+    public JsonRequest searchMovie(String theMovieTitle) {
+        // System.out.println(movieTitle);
+        String movieTitle = "";
         try {
-            movieTitle = URLEncoder.encode(movieTitle, "UTF-8");
+            movieTitle = URLEncoder.encode(theMovieTitle, "UTF-8");
         } catch (UnsupportedEncodingException cantencode) {
             cantencode.printStackTrace();
         }
@@ -158,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
                         // the response is already constructed as a JSONObject!
                         try {
                             JSONArray results = response.getJSONArray("Search");
-                            System.out.println(results.length());
+                            // System.out.println(results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 try {
                                     JSONObject singleMovieResult = results.getJSONObject(i);

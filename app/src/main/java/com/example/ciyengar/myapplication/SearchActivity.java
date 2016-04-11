@@ -148,7 +148,7 @@ public class SearchActivity extends AppCompatActivity {
         try {
             movieTitle = URLEncoder.encode(theMovieTitle, "UTF-8");
         } catch (UnsupportedEncodingException cantencode) {
-            Log.e("SearchActivity", cantencode.getMessage());
+            Log.e("Search Activity", cantencode.getMessage());
         }
         movies.clear();
         movieTitles.clear();
@@ -180,7 +180,7 @@ public class SearchActivity extends AppCompatActivity {
                             }
                             SearchActivity.this.refresh();
                         } catch (JSONException e) {
-                            Log.e("SearchActivity", e.getMessage());
+                            Log.e("Search Activity", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {

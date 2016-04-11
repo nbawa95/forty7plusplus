@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     public static User currentUser;
-    //private View mLoginFormView;
+    private View mLoginFormView;
     private Button registerButton;
     private Button mEmailSignInButton;
     private String users = "users";
@@ -163,16 +163,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthenticationError(FirebaseError firebaseError) {
                 mPasswordView.setError(firebaseError.getMessage());
                 if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
-                    Firebase userRef = new Firebase(databaseLink).child("contact").child(encrypt(mEmailView.getText().toString()));
-                    System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
                     Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("contact").child(encrypt(mEmailView.getText().toString()));
                     // System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             final String uid = (String) snapshot.getValue();
-                            System.out.println("UID acquired is: " + uid);
-                            Firebase newRef = new Firebase(databaseLink).child(users).child(uid);
                             // System.out.println("UID acquired is: " + uid);
                             Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
                             newRef.addListenerForSingleValueEvent(new ValueEventListener() {

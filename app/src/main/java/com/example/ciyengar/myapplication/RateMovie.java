@@ -235,19 +235,19 @@ public class RateMovie extends AppCompatActivity {
                         } else {
                             System.out.println("This is also happening");
                             majorRating.setText("Major rating: " + String.valueOf(ratingInfo.get(majorRatingString)));
-                        overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + ratingInfo.get("overallRating"));
-                        overallRating.setVisibility(View.VISIBLE);
-                        // System.out.println("This is happening");
-                        if (ratingInfo.get("majorRating") == null) {
-                            majorRating.setVisibility(View.GONE);
-                        } else {
-                            // System.out.println("This is also happening");
-                            majorRating.setText("Major rating: " + ratingInfo.get("majorRating"));
-                            majorRating.setVisibility(View.VISIBLE);
+                            overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + ratingInfo.get("overallRating"));
+                            overallRating.setVisibility(View.VISIBLE);
+                            // System.out.println("This is happening");
+                            if (ratingInfo.get("majorRating") == null) {
+                                majorRating.setVisibility(View.GONE);
+                            } else {
+                                // System.out.println("This is also happening");
+                                majorRating.setText("Major rating: " + ratingInfo.get("majorRating"));
+                                majorRating.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
-
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {
                     // System.out.println("The read failed: " + firebaseError.getMessage());

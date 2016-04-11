@@ -108,11 +108,17 @@ public class LoginActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    /**
+     * populates Autocomplete blanks
+     */
     private void populateAutoComplete() {
         return;
 //        getLoaderManager().initLoader(0, null, this);
     }
 
+    /**
+     * brings user to register
+     */
     private void goToRegister() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
@@ -237,10 +243,20 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * encrypts email
+     * @param email the email
+     * @return encrypted email
+     */
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
 
+    /**
+     * decrypts email
+     * @param email email
+     * @return decrypted email
+     */
     private String decrypt(String email) {
         return email.replace("*", ".");
     }

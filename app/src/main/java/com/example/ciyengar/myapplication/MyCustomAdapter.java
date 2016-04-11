@@ -24,7 +24,11 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
 
 
-
+    /**
+     * The custom adapter
+     * @param users the users
+     * @param context the context
+     */
     public MyCustomAdapter(ArrayList<User> users, Context context) {
         userList = users;
         this.context = context;

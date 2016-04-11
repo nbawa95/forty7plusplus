@@ -101,6 +101,11 @@ public class RateMovie extends AppCompatActivity {
         pullRating();
     }
 
+    /**
+     * What happens when Options Menu  is created
+     * @param menu the menu
+     * @return a boolean as to whether or not the menu has been created
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
@@ -121,25 +126,44 @@ public class RateMovie extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * the logout menu
+     * @param view the view
+     */
     public void logoutMenu(MenuItem view) {
         myFirebaseRef.unauth();
         finish();
     }
 
+    /**
+     * Profile Menu
+     * @param item Menu item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(RateMovie.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Admin Menu
+     * @param view view
+     */
     public void adminMenu(MenuItem view) {
         startActivity(new Intent(RateMovie.this, Admin.class));
     }
 
+    /**
+     * Home Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         startActivity(new Intent(RateMovie.this, HomeActivity.class));
     }
 
+    /**
+     * Pulls Ratings for user
+     */
     public void pullRating() {
         yourRating = (TextView)findViewById(R.id.your_rating);
         overallRating = (TextView) findViewById((R.id.overall_rating));
@@ -237,7 +261,7 @@ public class RateMovie extends AppCompatActivity {
 
     /**
      * Request movie info from title
-     * @param movieID
+     * @param movieID the movie ID
      * @return JsonRequest
      */
     public JsonRequest moreMovieInfo(String movieID) {

@@ -27,9 +27,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Admin extends AppCompatActivity {
-
+    /**
+     *
+     */
     public static ArrayList<User> users = new ArrayList<>();
+    /**
+     *
+     */
     public static ArrayList<String> userNames = new ArrayList<>();
+    /**
+     *
+     */
     ListView userListView;
 
     @Override
@@ -85,6 +93,9 @@ public class Admin extends AppCompatActivity {
 
     }
 
+    /**
+     * Refreshes the view.
+     */
     public void refresh() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, userNames);
@@ -103,12 +114,20 @@ public class Admin extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Shows Profile Menu
+     * @param item the item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(Admin.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Menu to logout
+     * @param view viewing parameter
+     */
     public void logoutMenu(MenuItem view) {
         Firebase firebaseRef = new Firebase("https://moviespotlight.firebaseio.com");
         firebaseRef.unauth();
@@ -116,10 +135,18 @@ public class Admin extends AppCompatActivity {
         startActivity(new Intent(Admin.this, LoginActivity.class));
     }
 
+    /**
+     * Menu for Admis
+     * @param view view
+     */
     public void adminMenu(MenuItem view) {
         return;
     }
 
+    /**
+     * Home Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         startActivity(new Intent(Admin.this, HomeActivity.class));
     }

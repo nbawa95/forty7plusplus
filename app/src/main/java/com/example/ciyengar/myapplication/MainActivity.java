@@ -164,6 +164,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates the Options Menu
+     * @param menu the menu
+     * @return boolean of whether or not it is visible
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
@@ -184,21 +189,37 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Menu of the Profile
+     * @param item item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(MainActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Menu for Logout
+     * @param view view
+     */
     public void logoutMenu(MenuItem view) {
         myFirebaseRef.unauth();
         finish();
     }
 
+    /**
+     * Administrative Menu
+     * @param view view
+     */
     public void adminMenu(MenuItem view) {
         startActivity(new Intent(MainActivity.this, Admin.class));
     }
 
+    /**
+     * Home Screen Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
     }
@@ -328,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * check password
      * @param password user password
-     * @return
+     * @return returns boolean
      */
     private boolean isPasswordValid(String password) {
         if (password.length() < 5 || password.contains(":"))
@@ -338,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * load image
-     * @param view
+     * @param view view
      */
     public void loadImage(View view) {
         Intent i = new Intent(

@@ -9,6 +9,12 @@ import java.util.HashMap;
  * Created by Dhruv Sagar on 11-Apr-16.
  */
 public class Connector {
+    /**
+     * Profile Changes Are Successful
+     * @param newPassword the new passworld
+     * @param nameString the new name
+     * @param majorIndex the major
+     */
     public static void profileChangeSuccessful(String newPassword, String nameString, int majorIndex) {
 
     }

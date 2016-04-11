@@ -90,6 +90,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Registers a User
+     */
     private void registerMe() {
         Firebase ref = new Firebase("https://moviespotlight.firebaseio.com");
         String username = registerUsernameView.getText().toString();
@@ -164,21 +167,40 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Encrypts email
+     * @param email the users email
+     * @return an encrypted string
+     */
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
 
+    /**
+     * Decrupts email
+     * @param email the email
+     * @return a decrypted string
+     */
     private String decrypt(String email) {
         return email.replace("*", ".");
     }
 
-
+    /**
+     * checks for valid username
+     * @param username the inputted username
+     * @return boolean
+     */
     private boolean isUsernameValid(String username) {
         if (username.length() < 5)
             return false;
         return true;
     }
 
+    /**
+     * checks for valid password
+     * @param password the password
+     * @return boolean
+     */
     private boolean isPasswordValid(String password) {
         if (password.length() < 5)
             return false;

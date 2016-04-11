@@ -18,6 +18,10 @@ public class MySingleton {
     private ImageLoader mImageLoader;
     private static Context mCtx;
 
+    /**
+     * My Singleton
+     * @param context
+     */
     private MySingleton(Context context) {
         mCtx = context;
         mRequestQueue = getRequestQueue();

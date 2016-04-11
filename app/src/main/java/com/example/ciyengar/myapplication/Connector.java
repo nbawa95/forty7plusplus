@@ -45,7 +45,8 @@ public class Connector {
      * @return returns true if password is valid
      */
     private static boolean isPasswordValid(String password) {
-        if (password.length() < 5 || password.contains(":")) {
+        int minPasswordLength = 5;
+        if (password.length() < minPasswordLength) {
             return false;
         }
         return true;
@@ -60,7 +61,9 @@ public class Connector {
      * @return if the rating was successfully added
      */
     public static boolean addMovieRating(Movie currentMovie, HashMap<String, Double> ratingInfo, int rating) {
-        if (currentMovie == null || rating > 5 || rating < 1) {
+        int maxRating = 5;
+        int minRating = 1;
+        if (currentMovie == null || rating > maxRating || rating < minRating) {
             return false;
         }
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");

@@ -268,7 +268,8 @@ public class MainActivity extends AppCompatActivity {
 
             ImageView imageView = (ImageView) findViewById(R.id.proPic);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-            imageView.setRotation(90);
+            int rotation = 90;
+            imageView.setRotation(rotation);
 
         }
     }

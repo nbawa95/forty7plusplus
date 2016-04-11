@@ -8,12 +8,11 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.LruCache;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -22,7 +21,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
@@ -33,14 +31,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RateMovie extends AppCompatActivity {
 
@@ -74,8 +68,10 @@ public class RateMovie extends AppCompatActivity {
 
         //Setting bounds for the ratings.
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
-        ratingPicker.setMinValue(1);
-        ratingPicker.setMaxValue(5);
+        int minRatingPicker = 1;
+        int maxRatingPicker = 5;
+        ratingPicker.setMinValue(minRatingPicker);
+        ratingPicker.setMaxValue(maxRatingPicker);
 
         //Image stuff
         String url = currentMovie.getPosterURL();
@@ -255,13 +251,13 @@ public class RateMovie extends AppCompatActivity {
                             TextView movieDescField = (TextView) findViewById(R.id.movieDesc);
                             movieDescField.setText(response.getString("Plot"));
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("RateMovie", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
+                        Log.e("RateMovie", error.getMessage());
                     }
                 });
         return jsonRequest;

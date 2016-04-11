@@ -174,7 +174,8 @@ public class LoginActivity extends AppCompatActivity {
                                     numLoginAttempts++;
                                     Firebase anotherRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
                                     anotherRef.child("numLoginAttempts").setValue(numLoginAttempts);
-                                    if (numLoginAttempts > 3) {
+                                    int maxLoginAttempts = 3;
+                                    if (numLoginAttempts > maxLoginAttempts) {
                                         anotherRef.child("locked").setValue(true);
                                     }
                                 }

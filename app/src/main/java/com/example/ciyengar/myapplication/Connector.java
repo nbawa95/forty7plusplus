@@ -13,7 +13,18 @@ public class Connector {
 
     }
 
+    /**
+     * Adds the specified rating to the specified movie
+     * @param currentMovie the movie the rating should be added to
+     * @param ratingInfo a hashmap with information about how many people have rated the movie,
+     *                   what each major rating is, etc.
+     * @param rating the user's rating, must be between 1 and 5 stars
+     * @return if the rating was successfully added
+     */
     public static boolean addMovieRating(Movie currentMovie, HashMap<String, Double> ratingInfo, int rating) {
+        if (currentMovie == null || rating > 5 || rating < 1) {
+            return false;
+        }
         Firebase myFirebaseRef = new Firebase("https://moviespotlight.firebaseio.com/");
         AuthData authData = myFirebaseRef.getAuth();
         if (authData != null) {
@@ -22,7 +33,7 @@ public class Connector {
             myFirebaseRef.child("ratings").child(currentMovie.getID()).child("review").child(authData.getUid()).setValue(map);
             Firebase ratingsRef = myFirebaseRef.child("ratings").child(currentMovie.getID());
             if (ratingInfo == null) {
-                System.out.println("RATINGINFO IS NULL DUDE");
+                // System.out.println("RATINGINFO IS NULL DUDE");
                 ratingsRef.child("overallRating").setValue(String.valueOf(rating));
                 ratingsRef.child(LoginActivity.currentUser.getMajor()).setValue(String.valueOf(rating));
                 ratingsRef.child("NumtotalRatings").setValue(String.valueOf(1));
@@ -32,9 +43,9 @@ public class Connector {
                 double totalRated = ratingInfo.get("#totalRatings");
                 double majorRating = ratingInfo.get("majorRating") == null? 0 : ratingInfo.get("majorRating");
                 double totalMajorRated = ratingInfo.get("#majorRating");
-                System.out.println(majorRating + " :Major rating before submit");
-                System.out.println(ratingInfo.get("yourRating") + " :Your previous rating");
-                System.out.println(rating + " :your new rating");
+                // System.out.println(majorRating + " :Major rating before submit");
+                // System.out.println(ratingInfo.get("yourRating") + " :Your previous rating");
+                // System.out.println(rating + " :your new rating");
                 if (ratingInfo.get("yourRating") != null) {
                     oRating = (oRating*totalRated  - ratingInfo.get("yourRating") + rating) / (totalRated);
                     majorRating = (majorRating*totalMajorRated - ratingInfo.get("yourRating") + rating) / (totalMajorRated);

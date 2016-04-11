@@ -50,7 +50,6 @@ public class RateMovie extends AppCompatActivity {
     private HashMap<String, Double> ratingInfo;
     private TextView yourRating, overallRating, majorRating;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +64,7 @@ public class RateMovie extends AppCompatActivity {
         movieInfo = Volley.newRequestQueue(this);
         movieInfo.add(moreMovieInfo(currentMovie.getID()));
 
-        //Setting the heading of the page to the e movie title
+        //Setting the heading of the page to the movie title
         TextView movieTitle = (TextView) findViewById(R.id.movieTitle);
         movieTitle.setText(currentMovie.getMovieTitle());
 
@@ -231,8 +230,11 @@ public class RateMovie extends AppCompatActivity {
     public void submitRating(View view) {
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
         int rating = ratingPicker.getValue();
-        Connector.addMovieRating(currentMovie, ratingInfo, rating);
-        finish();
+        if (Connector.addMovieRating(currentMovie, ratingInfo, rating)) {
+            finish();
+        } else {
+            System.out.println("there was an error");
+        }
     }
 
     /**

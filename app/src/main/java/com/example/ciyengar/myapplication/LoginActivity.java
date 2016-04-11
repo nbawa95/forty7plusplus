@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     public static User currentUser;
-    private View mProgressView;
     private View mLoginFormView;
     private Button registerButton;
     private Button mEmailSignInButton;
@@ -74,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -87,7 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                 return false;
             }
         });
-
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -95,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                 attemptLogin();
             }
         });
-
         registerButton = (Button) findViewById(R.id.go_to_register);
         registerButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -103,15 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                 goToRegister();
             }
         });
-
         mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-        return;
-//        getLoaderManager().initLoader(0, null, this);
-    }
 
     private void goToRegister() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

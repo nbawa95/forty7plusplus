@@ -196,8 +196,6 @@ public class SearchActivity extends AppCompatActivity {
     public void refresh() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, movieTitles);
-
-
         // Assign adapter to ListView
         listView.setAdapter(adapter);
     }

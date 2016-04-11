@@ -94,6 +94,7 @@ public class Connector {
         } else {
             return false;
         }
+        return true;
     }
 
     /**

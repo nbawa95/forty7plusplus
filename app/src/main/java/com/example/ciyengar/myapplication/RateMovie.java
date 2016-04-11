@@ -227,14 +227,14 @@ public class RateMovie extends AppCompatActivity {
                         yourRating.setVisibility(View.VISIBLE);
                     }
                     if (ratingInfo != null) {
-                        overallRating.setText(ratingInfo.get(overallRatingString) == null ? "Not Rated" : "Overall rating: " + String.valueOf(ratingInfo.get(overallRatingString)));
+                        overallRating.setText(ratingInfo.get(overallRatingString) == null ? "Not Rated" : "Overall rating: " + ratingInfo.get(overallRatingString));
                         overallRating.setVisibility(View.VISIBLE);
                         System.out.println("This is happening");
                         if (ratingInfo.get(majorRatingString) == null) {
                             majorRating.setVisibility(View.GONE);
                         } else {
                             System.out.println("This is also happening");
-                            majorRating.setText("Major rating: " + String.valueOf(ratingInfo.get(majorRatingString)));
+                            majorRating.setText("Major rating: " + ratingInfo.get(majorRatingString));
                             overallRating.setText(ratingInfo.get("overallRating") == null ? "Not Rated" : "Overall rating: " + ratingInfo.get("overallRating"));
                             overallRating.setVisibility(View.VISIBLE);
                             // System.out.println("This is happening");

@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity {
     public static ArrayList<String> movieTitles = new ArrayList<>();
     private static Firebase firebaseRef;
 
-    ListView listView;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

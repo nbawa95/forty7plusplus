@@ -31,7 +31,7 @@ public class Admin extends AppCompatActivity {
     /**
      *
      */
-    ListView userListView;
+    private ListView userListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

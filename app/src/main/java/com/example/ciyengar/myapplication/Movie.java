@@ -26,7 +26,8 @@ public class Movie {
     }
 
     /**
-     * set movie description
+     * Sets Movie Description
+     * @param movieDesc The Movie Description
      */
     public void setMovieDesc(String movieDesc) {
         this.movieDesc = movieDesc;

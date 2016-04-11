@@ -75,7 +75,9 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
     }
 
-
+    /**
+     * brings user to register
+     */
     private void goToRegister() {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
@@ -119,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         ref.authWithPassword(email, password, new Firebase.AuthResultHandler() {
             @Override
             public void onAuthenticated(final AuthData authData) {
-                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                // System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
 
                 Firebase userRef = new Firebase(databaseLink).child(users).child((String) authData.getUid());
                 userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                             isAdmin = false;
                         }
                         currentUser = new User((String) authData.getUid(), name, major, isAdmin);
-                        System.out.println(isBlocked);
+                        // System.out.println(isBlocked);
                         if (isBlocked || isLocked) {
                             mPasswordView.setError("Sorry! Your account has been blocked or locked.");
                             return;
@@ -153,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onCancelled(FirebaseError firebaseError) {
-                        System.out.println("The read failed: " + firebaseError.getMessage());
+                        // System.out.println("The read failed: " + firebaseError.getMessage());
                     }
                 });
             }
@@ -163,12 +165,16 @@ public class LoginActivity extends AppCompatActivity {
                 if (firebaseError.getCode() == FirebaseError.INVALID_PASSWORD) {
                     Firebase userRef = new Firebase(databaseLink).child("contact").child(encrypt(mEmailView.getText().toString()));
                     System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
+                    Firebase userRef = new Firebase("https://moviespotlight.firebaseio.com/").child("contact").child(encrypt(mEmailView.getText().toString()));
+                    // System.out.println("encryption is: " + encrypt(mEmailView.getText().toString()));
                     userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             final String uid = (String) snapshot.getValue();
                             System.out.println("UID acquired is: " + uid);
                             Firebase newRef = new Firebase(databaseLink).child(users).child(uid);
+                            // System.out.println("UID acquired is: " + uid);
+                            Firebase newRef = new Firebase("https://moviespotlight.firebaseio.com/").child("users").child(uid);
                             newRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -190,7 +196,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(FirebaseError firebaseError) {
-                            System.out.println("The read failed: " + firebaseError.getMessage());
+                            // System.out.println("The read failed: " + firebaseError.getMessage());
                         }
                     });
                 }
@@ -201,11 +207,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * encrypts email
+     * @param email the email
+     * @return encrypted email
+     */
     private String encrypt(String email) {
         return email.replace('.', '*');
     }
 
-    
     private String decrypt(String email) {
         return email.replace("*", ".");
     }

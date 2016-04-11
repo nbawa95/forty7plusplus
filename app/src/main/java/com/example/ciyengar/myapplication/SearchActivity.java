@@ -32,6 +32,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+/**
+ * All methods realated to searching
+ */
 public class SearchActivity extends AppCompatActivity {
 
     public static ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -109,6 +112,10 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Handles Intents
+     * @param intent the intent
+     */
     private void handleIntent(Intent intent) {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
@@ -131,13 +138,14 @@ public class SearchActivity extends AppCompatActivity {
 
     /**
      * Request movies according to title
-     * @param movieTitle
+     * @param theMovieTitle the movie Title
      * @return JsonRequest
      */
-    public JsonRequest searchMovie(String movieTitle) {
-        System.out.println(movieTitle);
+    public JsonRequest searchMovie(String theMovieTitle) {
+        // System.out.println(movieTitle);
+        String movieTitle = "";
         try {
-            movieTitle = URLEncoder.encode(movieTitle, "UTF-8");
+            movieTitle = URLEncoder.encode(theMovieTitle, "UTF-8");
         } catch (UnsupportedEncodingException cantencode) {
             cantencode.printStackTrace();
         }
@@ -151,7 +159,7 @@ public class SearchActivity extends AppCompatActivity {
                         // the response is already constructed as a JSONObject!
                         try {
                             JSONArray results = response.getJSONArray("Search");
-                            System.out.println(results.length());
+                            // System.out.println(results.length());
                             for (int i = 0; i < results.length(); i++) {
                                 try {
                                     JSONObject singleMovieResult = results.getJSONObject(i);
@@ -194,6 +202,11 @@ public class SearchActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
     }
 
+    /**
+     * Creates Option Menu
+     * @param menu the menu
+     * @return boolean
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_xml, menu);
@@ -213,21 +226,37 @@ public class SearchActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Profile Menu
+     * @param item item
+     */
     public void profileMenu(MenuItem item) {
         Intent i = new Intent(SearchActivity.this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
+    /**
+     * Logout Menu
+     * @param view view
+     */
     public void logoutMenu(MenuItem view) {
         firebaseRef.unauth();
         finish();
     }
 
+    /**
+     * admin Menu
+     * @param view view
+     */
     public void adminMenu(MenuItem view) {
         startActivity(new Intent(SearchActivity.this, Admin.class));
     }
 
+    /**
+     * Home Menu
+     * @param view view
+     */
     public void homeMenu(MenuItem view) {
         startActivity(new Intent(SearchActivity.this, HomeActivity.class));
     }

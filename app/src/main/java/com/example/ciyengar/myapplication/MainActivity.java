@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchActivity.class)) );
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(new ComponentName(this, SearchActivity.class)));
         searchView.setIconifiedByDefault(true);
         return true;
     }
@@ -235,28 +235,12 @@ public class MainActivity extends AppCompatActivity {
         String nameString = name.getText().toString();
         NumberPicker major = (NumberPicker) findViewById(R.id.major);
         int majorIndex = major.getValue();
-        cancel = Connector.profileChangeSuccessful(newPassword, nameString, majorIndex);
-        if (!isPasswordValid(newPassword.getText().toString())) {
+        CharSequence text = Connector.profileChangeSuccessful(newPassword, nameString, majorIndex);
+        if (text != null) {
             Context context = getApplicationContext();
-            CharSequence text = "Password is not valid";
-            int duration = Toast.LENGTH_SHORT;
-            cancel = true;
-            Toast toast = Toast.makeText(context, text, duration);
+            Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
             toast.show();
-        } else if (nameString.length() < 2) {
-            Context context = getApplicationContext();
-            CharSequence text = "Name is too short";
-            int duration = Toast.LENGTH_SHORT;
             cancel = true;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
-        } else if (majorIndex == 0) {
-            Context context = getApplicationContext();
-            CharSequence text = "Please pick a major";
-            int duration = Toast.LENGTH_SHORT;
-            cancel = true;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
         }
         if (!cancel) {
             updateDB();
@@ -286,17 +270,13 @@ public class MainActivity extends AppCompatActivity {
         String oldPasswordText = oldPassword.getText().toString();
         String newPasswordText = newPassword.getText().toString();
         String majorText = majors[major.getValue()];
-        String myUID = "";
-        AuthData authData = myFirebaseRef.getAuth();
-        if (authData != null) {
-            myUID = (String) authData.getUid();
-        }
-        // Update password on DB
+        Connector.updateProfile(nameText, majorText);
         myFirebaseRef.changePassword(usernameText, oldPasswordText, newPasswordText, new Firebase.ResultHandler() {
             @Override
             public void onSuccess() {
                 // password changed
             }
+
             @Override
             public void onError(FirebaseError firebaseError) {
                 Context context = getApplicationContext();
@@ -306,9 +286,7 @@ public class MainActivity extends AppCompatActivity {
                 toast.show();
             }
         });
-        Firebase newUserRef = new Firebase("https://moviespotlight.firebaseio.com").child("users").child(myUID);
-        newUserRef.child("name").setValue(nameText);
-        newUserRef.child("major").setValue(majorText);
+
 //        myFirebaseRef.changeEmail(oldEmail, oldPasswordText, usernameText, new Firebase.ResultHandler() {
 //            @Override
 //            public void onSuccess() {
@@ -325,16 +303,6 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    /**
-     * check password
-     * @param password user password
-     * @return
-     */
-    private boolean isPasswordValid(String password) {
-        if (password.length() < 5 || password.contains(":"))
-            return false;
-        return true;
-    }
 
     /**
      * load image

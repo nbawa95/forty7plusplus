@@ -1,22 +1,9 @@
 package com.example.ciyengar.myapplication;
 
-import android.util.Log;
-import android.widget.EditText;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +26,31 @@ public final class Connector {
      * array of curse words
      */
     private static String[] curseWords = {"ass", "fuck", "bitch", "bastard", "cunt", "porn"};
+
+    /**
+     * min p length
+     */
+    private static final int minPasswordLength = 5;
+
+    /**
+     * min username length
+     */
+    private static final int minUsernameLength = 5;
+
+    /**
+     * max rating
+     */
+    private static final int maxRating = 5;
+
+    /**
+     * min rating
+     */
+    private static final int minRating = 1;
+
+    /**
+     * min movie title size
+     */
+    private static final int minMovieTitleSize = 4;
 
     /**
      * Connector is not called
@@ -75,7 +87,7 @@ public final class Connector {
         if (password == null) {
             throw new IllegalArgumentException("Password is null");
         }
-        int minPasswordLength = 5;
+
         if (password.length() < minPasswordLength) {
             return false;
         }
@@ -92,7 +104,7 @@ public final class Connector {
         if (username == null) {
             throw new IllegalArgumentException("Username is null");
         }
-        int minUsernameLength = 5;
+
         if (username.length() < minUsernameLength) {
             return false;
         } else if (!username.contains("@")) {
@@ -110,8 +122,7 @@ public final class Connector {
      * @return if the rating was successfully added
      */
     public static boolean addMovieRating(Movie currentMovie, Map<String, Double> ratingInfo, int rating) {
-        int maxRating = 5;
-        int minRating = 1;
+
         if (currentMovie == null || rating > maxRating || rating < minRating) {
             return false;
         }
@@ -212,7 +223,7 @@ public final class Connector {
                 return false;
             }
         }
-        if (movieTitle.length() < 4) {
+        if (movieTitle.length() < minMovieTitleSize) {
             return false;
         }
         return true;

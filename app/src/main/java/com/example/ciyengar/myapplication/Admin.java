@@ -24,11 +24,11 @@ public class Admin extends AppCompatActivity {
     /**
      *
      */
-    public static List<User> users = new ArrayList<>();
+    private static List<User> users = new ArrayList<>();
     /**
      *
      */
-    public static List<String> userNames = new ArrayList<>();
+    private static List<String> userNames = new ArrayList<>();
     /**
      *
      */

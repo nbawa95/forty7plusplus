@@ -59,6 +59,11 @@ public class LoginActivity extends AppCompatActivity {
      */
     private String databaseLink = "https://moviespotlight.firebaseio.com/";
 
+    /**
+     * max login attempts
+     */
+    private static final int maxLoginAttempts = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
                                     numLoginAttempts++;
                                     Firebase anotherRef = new Firebase(databaseLink).child(users).child(uid);
                                     anotherRef.child("numLoginAttempts").setValue(numLoginAttempts);
-                                    int maxLoginAttempts = 3;
+
                                     if (numLoginAttempts > maxLoginAttempts) {
                                         anotherRef.child("locked").setValue(true);
                                     }

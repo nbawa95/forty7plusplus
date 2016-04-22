@@ -160,18 +160,7 @@ public class RegisterActivity extends AppCompatActivity {
         return email.replace('.', '*');
     }
 
-    /**
-     * checks for valid password
-     * @param password the password
-     * @return boolean
-     */
-    private boolean isPasswordValid(String password) {
-        int minPasswordLength = 5;
-        if (password.length() < minPasswordLength) {
-            return false;
-        }
-        return true;
-    }
+
 
 }
 

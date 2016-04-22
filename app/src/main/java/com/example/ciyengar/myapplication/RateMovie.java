@@ -71,6 +71,16 @@ public class RateMovie extends AppCompatActivity {
      */
     private String notRatedString = "Not Rated";
 
+    /**
+     * min rating bruh
+     */
+    private static final int minRatingPicker = 1;
+
+    /**
+     * max rating bruh
+     */
+    private static final int maxRatingPicker = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,8 +105,7 @@ public class RateMovie extends AppCompatActivity {
 
         //Setting bounds for the ratings.
         NumberPicker ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
-        int minRatingPicker = 1;
-        int maxRatingPicker = 5;
+
         ratingPicker.setMinValue(minRatingPicker);
         ratingPicker.setMaxValue(maxRatingPicker);
 

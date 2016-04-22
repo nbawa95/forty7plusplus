@@ -68,6 +68,11 @@ public class HomeActivity extends AppCompatActivity {
      */
     private String noMoviesMessage = "No Recommended Movies";
 
+    /**
+     * min recom rating
+     */
+    private static final int minRecommendationRating = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -182,7 +187,7 @@ public class HomeActivity extends AppCompatActivity {
                     // System.out.println(movie.child("Num" + LoginActivity.currentUser.getMajor()).exists() + " : does major exist");
                     // System.out.println(movie.child(LoginActivity.currentUser.getMajor()).getValue() + ": major rating");
                     for(DataSnapshot movie : snapshot.getChildren()) {
-                        int minRecommendationRating = 4;
+
                         if (movie.child(LoginActivity.currentUser.getMajor()).exists() &&
                                 !movie.child("review").child(LoginActivity.currentUser.getId()).exists()
                                 && Double.parseDouble((String)

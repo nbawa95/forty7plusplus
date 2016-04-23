@@ -1,0 +1,17 @@
+{
+  "name": "Spotlight",
+  "version": "1.0.1",
+  "description": "Gives the Spotlight rating of a movie",
+  "manifest_version": 2,
+  "permissions": ["https://www.googleapis.com/*", "activeTab"],
+  "browser_action": {
+    "default_icon" : "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://www.imdb.com/title/*"],
+      "js" : ["firebase.js", "jquery-1.12.3.js", "contentscript.js"]
+    }
+  ],
+  "web_accessible_resources": ["icon.png"]
+}

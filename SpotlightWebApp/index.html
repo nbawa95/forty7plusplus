@@ -1,0 +1,33 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="script.js"></script>
+  <title>Spotlight</title>
+</head>
+<body>
+
+  <div class="header"><a href="index.html"><img src="spotlightLogo.png" title="Spotlight"></a></div>
+
+  <div class="menu">
+    <div class="search">
+      <form>
+        <input type="text" id="search" name="query" placeholder="Search for a movie" autocomplete="off">
+        <input type="submit" value="Search">
+      </form>
+    </div>
+    <span title="Profile"><i class="fa fa-user"></i></span>
+    <span title="Logout" onclick="logout()"><i class="fa fa-sign-out"></i></span>
+  </div>
+
+  <div class="results"></div>
+
+  <div class="recommendations"></div>
+
+</body>
+</html>

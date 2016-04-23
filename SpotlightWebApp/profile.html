@@ -1,0 +1,34 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  <script src="login.js"></script>
+  <script src="script.js"></script>
+  <title>Spotlight</title>
+</head>
+<body onload="addMajors();">
+
+  <div class="header"><a href="index.html"><img src="spotlightLogo.png" title="Spotlight"></a></div>
+
+  <div class="login">
+    <span id="message"></span>
+    <form>
+      <input type="text" id="name" name="name" placeholder="Name" required>
+      <select id="major" name="major" required="">
+        <option value="Computer Science" disabled selected>Select your major</option>
+      </select>
+      <hr>
+      <input type="text" id="email" name="email" placeholder="Email" required>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+      <input type="submit" onclick="updateEmail()" value="Change Email">
+    </form>
+    <span class="login-link"><a href="index.html">Back Home</a></span>
+    <span class="login-link"><a href="password.html">Reset your password</a></span>
+  </div>
+
+</body>
+</html>

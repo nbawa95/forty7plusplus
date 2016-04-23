@@ -24,7 +24,11 @@ function login(event) {
 	    message(error, false);
 	  } else {
 	    console.log("Authenticated successfully with payload:", authData);
-	    window.location.href = 'index.html';
+	    if (authData.password.isTemporaryPassword) {
+	    	window.location.href = 'password.html';
+	    } else {
+	    	window.location.href = 'index.html';
+	    }
 	  }
 	});
 }

@@ -28,7 +28,7 @@ body {
     text-align: center;
 }
 
-.login input {
+.login input, .login select {
     background: #222;
     border: 0;
     color: #999;
@@ -63,13 +63,18 @@ body {
     opacity: 1;
 }
 
-.login a {
+.login-link a {
     color: #FFC100;
     text-decoration: none;
     opacity: .7;
 }
 
-.login a:hover {
+.login-link {
+    display: inline-block;
+    margin: 10px 10px;
+}
+
+.login-link a:hover {
     opacity: 1;
 }
 

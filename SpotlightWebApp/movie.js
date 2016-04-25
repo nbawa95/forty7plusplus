@@ -24,7 +24,7 @@ $(document).ready(function() {
 	  		console.log("The read failed: " + errorObject.code);
 		});
 		setMovieInfo(movieID);
-		addFBInte(movieID);
+		// addFBInte(movieID);
 	}
 
 	$('#movie-spotlight-yourRating i').click(function(event) {
@@ -78,8 +78,11 @@ $(document).ready(function() {
 	});
 });
 
-function addFBInte(movieID) {
-	theEle = '<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fmoviespotlight.firebaseapp.com%2Fmovie.html%2Fid=' + movieID + '&width=180&layout=button_count&action=recommend&show_faces=true&share=true&height=46&appId" width="180" height="46" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>';
+function addFBInte(movieName) {
+	// theEle = '<iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fashaysheth.com%2Fprojects%2Fspotlight%2Fmovie.html%2Fid=' + movieID + '&width=180&layout=button_count&action=recommend&show_faces=true&share=true&height=46&appId" width="180" height="46" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>';
+	theEle = '<iframe src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2F' + movieName + '%2F&width=132&layout=button_count&action=like&show_faces=true&share=true&height=46&appId=624052767743200" width="132" height="46" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>';
+	// console.log(movieName);
+	// console.log(theEle);
 	$('.fb').append(theEle);
 }
 
@@ -90,7 +93,8 @@ function setMovieInfo(movieID) {
 		$('#movie-title').text(data.Title);
 		$('#movie-plot').text(data.Plot);
 		$('#movie-imdbRating').text(data.imdbRating);
-		$('#movie-poster').attr('src', data.Poster);		
+		$('#movie-poster').attr('src', data.Poster);
+		addFBInte(data.Title);
 		console.log(data)
 	});
 	search.fail(function() {

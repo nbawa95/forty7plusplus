@@ -78,6 +78,17 @@ body {
     opacity: 1;
 }
 
+#fb-login {
+    background: #3a5795;
+    color: #FFF;
+    cursor: pointer;
+    opacity: .7;
+}
+
+#fb-login:hover {
+    opacity: 1;
+}
+
 .search input[type="text"] {
     background: #222;
     border: 0;
@@ -206,7 +217,6 @@ body {
 
 .details .fb {
     float: right;
-    margin-right: -10px;
 }
 
 .details img#movie-poster {

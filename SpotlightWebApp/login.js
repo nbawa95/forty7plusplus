@@ -33,6 +33,36 @@ function login(event) {
 	});
 }
 
+function loginWithFacebook() {
+	var ref = new Firebase("https://moviespotlight.firebaseio.com/");
+	ref.authWithOAuthPopup("facebook", function(error, authData) {
+	  if (error) {
+	    console.log("Login Failed!", error);
+	  } else {
+	    console.log("Authenticated successfully with payload:", authData);
+	    String.prototype.replaceAll = function(search, replacement) {
+	        var target = this;
+	        return target.split(search).join(replacement);
+	    };
+	    ref.child("users/" + authData.uid).set({
+	    	"name": authData.facebook.displayName,
+	    	"major": "Computer Science",
+	    	"admin": false,
+	    	"locked": false,
+	    	"blocked": false,
+	    	"numLoginAttempts": 0
+	    });
+	    email = authData.facebook.email;
+	    userOb = {};
+	    userOb[email.replaceAll('.', '*')] = authData.uid;
+	    ref.child("contact/").update(userOb);
+	    window.location.href = 'index.html';
+	  }
+	}, {
+  		scope: "email"
+	});
+}
+
 function register(event) {
 	event.preventDefault();
 	var ref = new Firebase("https://moviespotlight.firebaseio.com/");

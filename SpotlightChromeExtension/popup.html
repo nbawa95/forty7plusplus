@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+  <script src="firebase.js"></script>
+  <script src="jquery-1.12.3.js"></script>
+  <script src="popup.js"></script>
+  <title>Spotlight</title>
+  <style type="text/css">
+
+
+  *, *:before, *:after {
+      -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+  }
+
+  body {
+      background: #181818;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+  }
+
+  .header a {
+      outline: none;
+  }
+
+  .header img {
+      height: 200px;
+      outline: none;
+  }
+
+  .header {
+      text-align: center;
+  }
+
+  .movie {
+      cursor: pointer;
+  }
+
+  .login {
+      text-align: center;
+      margin-top: -25px;
+  }
+
+  .login input, .login select {
+      background: #222;
+      border: 0;
+      color: #999;
+      font-size: 15px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 15px;
+      outline: 0;
+      display: block;
+      margin: 10px 0;
+      transition: all .3s;
+  }
+
+  .login form {
+    width: 400px;
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+
+  .login input[type="button"] {
+      color: #181818;
+      background: #FFC100;
+      cursor: pointer;
+      font-weight: bold;
+      opacity: .75;
+  }
+
+  .login input:focus {
+      background: #333;
+  }
+
+  .login input[type="button"]:hover {
+      opacity: 1;
+  }
+
+  .login-link a {
+      color: #FFC100;
+      text-decoration: none;
+      opacity: .7;
+  }
+
+  .login-link {
+      display: inline-block;
+      margin: 10px 10px 25px;
+  }
+
+  .login-link a:hover {
+      opacity: 1;
+  }
+  
+
+  </style>
+</head>
+<body>
+
+  <div class="header"><img src="spotlightLogo.png" title="Spotlight"></div>
+
+  <div class="login">
+    <span id="message"></span>
+    <form>
+      <input type="text" id="email" name="email" placeholder="Email" required>
+      <input type="password" id="password" name="password" placeholder="Password" required>
+      <input type="button" value="Login" id="loginBtn">
+      <span class="login-link"><a href="register.html">Create an account</a></span>
+      <span class="login-link"><a href="reset.html">Reset your password</a></span>
+    </form>
+  </div>
+
+</body>
+</html>
